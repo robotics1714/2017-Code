@@ -16,6 +16,8 @@ public class Control {
 		rightStickPin,
 		xboxPin;
 	//Pin placeholder
+	boolean rightButton1 = false;
+	
 	
 	Control(Shooter fuelShooter, Climbing climber, CoinSlot coinSlot, DriveTrain driveTrain){
 		train = driveTrain;
@@ -29,8 +31,18 @@ public class Control {
 	}
 	
 	public void update(){
-		
+		rightButton1 = rightStick.getRawButton(1);
 	}
 	
 	
+	
 }
+
+/*
+void update()
+{
+	int button1 = 0;
+	Controls.update(button1);
+	DriveTrain.update(button1);
+}
+*/
