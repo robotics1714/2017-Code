@@ -16,6 +16,22 @@ public class Robot extends IterativeRobot {
 	final String customAuto = "My Auto";
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
+	
+	public static boolean 
+		startCompressor,
+		stopCompressor,
+		shiftHigh,
+		shiftLow,
+		shoot,
+		enablePTO,
+		disablePTO,
+		intakeOn,
+		intakeStop,
+		intakeReverse;
+	public static int
+		intake;
+		
+	
 
 	/**
 	 * This function is run when the robot is first started up and should be

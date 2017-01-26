@@ -17,13 +17,7 @@ public class DriveTrain {
 	 
 	 
 	 private boolean
-	 	shiftingGearHigh,
-	 	shiftingGearLow,
-	 	turningCompressorOn,
-	 	turningCompressorOff,
-	 	resettingGyro,
-	 	PTOenabled,
-	 	enablePTO;
+	 	PTOenabled;
 	 
 	 //Pin placeholder
 	 private int
@@ -55,7 +49,14 @@ public class DriveTrain {
     	dStation = DriverStation.getInstance();
 	 }
 	 
-	 public void update(){
+	 public void update(
+			 	boolean enablePTO,
+			 	boolean disablePTO, 
+			 	boolean shiftHigh, 
+			 	boolean shiftLow, 
+			 	boolean startCompressor, 
+			 	boolean stopCompressor){
+		 
 		 if(enablePTO == true){
 			 PTOenable();
 		 }
@@ -63,7 +64,7 @@ public class DriveTrain {
 			 PTOdisable();
 		 }
 		 
-		 if()
+		
 		 
 		 
 		 
@@ -80,26 +81,23 @@ public class DriveTrain {
 		 
 		 
 		 
-		 
-		 
-		 
-		 if (shiftingGearLow) {
+		 if (shiftLow) {
 	    		shiftGearLow();
 	    	}
-	    	else if (shiftingGearHigh) {
+	    	else if (shiftHigh) {
 	    		shiftGearHigh();
 	    	}
 	    	
-	    	if(turningCompressorOff) {
+	    	if(stopCompressor) {
 	    		turnCompressorOff();
 	    	}
-	    	else if(turningCompressorOn) {
+	    	else if(startCompressor) {
 	    		turnCompressorOn();
 	    	}
 	    	
-	    if (resettingGyro) {
-	    	resetGyro();
-	    }	
+	    //if (resettingGyro) {
+	    //	resetGyro();
+	    //}	
 	 }
 	 //Power Take Off section
 	 private void PTOenable(){
@@ -112,12 +110,6 @@ public class DriveTrain {
 		 PTOsolenoid.set(DoubleSolenoid.Value.kForward);
 		 PTOenabled = false;
 	 }
-	 public void setPTOenable(){
-		 enablePTO = true;
-	 }
-	 public void setPTOdisable(){
-		 enablePTO = false;
-	 }
 	 public boolean PTOenabled(){
 		 return PTOenabled;
 	 }
@@ -126,20 +118,12 @@ public class DriveTrain {
 	 //Shifting section
 	  void shiftGearHigh() {
 	    	shiftsolenoid.set(DoubleSolenoid.Value.kForward);
-	    	shiftingGearHigh = false;
 	  }
 	  void shiftGearLow() {
 			shiftsolenoid.set(DoubleSolenoid.Value.kReverse);
-			shiftingGearLow = false;
-	  }
-	  public void setShiftGearHigh() {
-	    	shiftingGearHigh = true;
-	  }
-	  public void setShiftGearLow() {
-	    	shiftingGearLow = true;
 	  }
 	  
-	  
+	  /*
 	  //Gyro section
 	  public void setResetGyro() {
 	    	resettingGyro = true;
@@ -147,25 +131,15 @@ public class DriveTrain {
 	  private void resetGyro() {
 	    	gyro.reset();
 			resettingGyro = false;
-	  }	  
+	  }*/	  
 	  
 	  
-	  //Compressor section
-	  public void setCompressorOn() {
-	    	turningCompressorOff = false;
-	    	turningCompressorOn = true;
-	  }	    
-	  public void setCompressorOff() {
-	    	turningCompressorOff = true;
-	    	turningCompressorOn = false;
-	  }	    
+	  //Compressor section    
 	  private void turnCompressorOn() {
 	    	comp.start();
-	    	turningCompressorOn = false;
 	  }	    
 	  private void turnCompressorOff() {
 	    	comp.stop();
-	    	turningCompressorOff = false;
 	  }
 			 
 	 	

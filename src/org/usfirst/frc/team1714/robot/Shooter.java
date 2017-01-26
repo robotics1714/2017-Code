@@ -17,18 +17,8 @@ public class Shooter {
 		beltSpeed,
 		shootSpeed;
 	private boolean
-		shootingStarted,
-		startShooting;
-	
-	public enum intakeDirection{
-		IN, OUT, STOP
-	}
-	public enum beltDirection{
-		UP, DOWN, STOP
-	}
-	private intakeDirection IntakeDirection;
-	private beltDirection BeltDirection;
-	
+		shootingStarted;
+
 	
 	Shooter(){
 		intakeTalon = new Talon(intakeTalonPin);
@@ -37,37 +27,28 @@ public class Shooter {
 		
 	}
 	
-	public void update(){
-		
-		if(startShooting==true){
-			shootingStart();
+	public void update(boolean shoot, int intake){
+		switch(intake){
+			case 0:
+				intakeSTOP();
+				break;
+			case 1:
+				intakeIN();
+				break;
+			case 2:
+				intakeOUT();
+				break;
 		}
-		else{
+		
+		if(shoot){
+			shootingStart();
+			
+		}
+		else if(!shoot){
 			shootingStop();
 		}
 		
-		switch(IntakeDirection){
-		case IN:
-			intakeIN();
-			break;
-		case OUT:
-			intakeOUT();
-			break;
-		case STOP:
-			intakeSTOP();
-			break;
-		}
 		
-		switch(BeltDirection){
-		case UP:
-			beltUP();
-			break;
-		case DOWN:
-			beltDOWN();
-			break;
-		case STOP:
-			beltSTOP();
-		}
 			
 	}
 	
@@ -79,12 +60,6 @@ public class Shooter {
 	private void shootingStop(){
 		shootTalon.set(0);
 		shootingStarted = false;
-	}
-	public void setShootingStart(){
-		startShooting = true;
-	}
-	public void setShootingStop(){
-		startShooting = false;
 	}
 	public boolean shootingStarted(){
 		return shootingStarted;
@@ -101,15 +76,6 @@ public class Shooter {
 	private void intakeSTOP(){
 		intakeTalon.set(0);
 	}
-	public void setIntakeIN(){
-		IntakeDirection = intakeDirection.IN;
-	}
-	public void setIntakeOUT(){
-		IntakeDirection = intakeDirection.OUT;
-	}
-	public void setIntakeSTOP(){
-		IntakeDirection = intakeDirection.STOP;
-	}
 	
 	
 	//feeding belt section
@@ -122,16 +88,6 @@ public class Shooter {
 	private void beltSTOP(){
 		beltTalon.set(0);
 	}
-	public void setBeltUP(){
-		BeltDirection = beltDirection.UP;
-	}
-	public void setBeltDOWN(){
-		BeltDirection = beltDirection.DOWN;
-	}
-	public void setBeltSTOP(){
-		BeltDirection = beltDirection.STOP;
-	}
-	
 	
 	
 	
