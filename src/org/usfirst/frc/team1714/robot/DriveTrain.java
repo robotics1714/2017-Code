@@ -17,7 +17,11 @@ public class DriveTrain {
 	 
 	 
 	 private boolean
-	 	PTOenabled;
+	 	PTOenabled,
+	 	PTOIsEnable,
+	 	PTOIsDisable,
+	 	compressorIsOn,
+	 	compressorIsOff;
 	 
 	 //Pin placeholder
 	 private int
@@ -57,29 +61,12 @@ public class DriveTrain {
 			 	boolean startCompressor, 
 			 	boolean stopCompressor){
 		 
-		 if(enablePTO == true){
+		 if(enablePTO){
 			 PTOenable();
 		 }
 		 else{
 			 PTOdisable();
 		 }
-		 
-		
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
 		 
 		 if (shiftLow) {
 	    		shiftGearLow();

@@ -1,14 +1,14 @@
 package org.usfirst.frc.team1714.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 
 public class Control {
-	Joystick leftStick, rightStick, xboxStick;
+	Joystick leftStick, rightStick;
+	XboxController xboxStick;
 	
 	private DriveTrain train;
-	private Shooter shooter;
-	private Climbing climb;
-	private CoinSlot gear;
+	private Manipulator manip;
 	
 	//Pin placeholder
 	private int
@@ -18,16 +18,16 @@ public class Control {
 	//Pin placeholder
 	
 	
+	int tempPin;
 	
-	Control(Shooter fuelShooter, Climbing climber, CoinSlot coinSlot, DriveTrain driveTrain){
+	
+	
+	Control(Manipulator manipulator, DriveTrain driveTrain){
 		train = driveTrain;
-		shooter = fuelShooter;
-		climb = climber;
-		gear = coinSlot;
-		
+		manip = manipulator;
 		leftStick = new Joystick(leftStickPin);
 		rightStick = new Joystick(rightStickPin);
-		xboxStick = new Joystick(xboxPin);
+		xboxStick = new XboxController(xboxPin);
 	}
 	
 	public void update(){
@@ -35,17 +35,11 @@ public class Control {
 		Robot.shiftLow = rightStick.getRawButton(2);
 		Robot.enablePTO = leftStick.getRawButton(3);
 		Robot.disablePTO = leftStick.getRawButton(2);
+		Robot.shoot = xboxStick.getRawButton(tempPin);
+		Robot.feedBeltReverse = xboxStick.getRawButton(tempPin);
+		Robot.intakeOn = xboxStick.getRawButton(tempPin);
+		Robot.intakeReverse = xboxStick.getRawButton(tempPin);
+		Robot.intakeStop = xboxStick.getRawButton(tempPin);
 	}
-	  
-	
-	
+	  	
 }
-
-/*
-void update()
-{
-	int button1 = 0;
-	Controls.update(button1);
-	DriveTrain.update(button1);
-}
-*/

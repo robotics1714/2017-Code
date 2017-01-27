@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1714.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -17,6 +18,8 @@ public class Robot extends IterativeRobot {
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
 	
+	Servo cameraServo;
+	
 	public static boolean 
 		startCompressor,
 		stopCompressor,
@@ -27,9 +30,12 @@ public class Robot extends IterativeRobot {
 		disablePTO,
 		intakeOn,
 		intakeStop,
-		intakeReverse;
-	public static int
-		intake;
+		intakeReverse,
+		feedBeltReverse;
+	
+	private int
+		cameraServoPin;
+		
 		
 	
 
@@ -42,6 +48,7 @@ public class Robot extends IterativeRobot {
 		chooser.addDefault("Default Auto", defaultAuto);
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
+		cameraServo = new Servo(cameraServoPin);
 	}
 
 	/**
