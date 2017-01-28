@@ -1,19 +1,19 @@
 package org.usfirst.frc.team1714.robot;
 
-import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 
 public class Manipulator {
-	private Talon intakeTalon, beltTalon, shootTalon;
+	private Victor intakeVictor, beltVictor, shootVictor;
 	private DigitalInput gearDetect;
 	private Encoder speedEncoder;
 	
 	//Pin placeholder
 	private int
-		intakeTalonPin,
-		beltTalonPin,
-		shootTalonPin,
+		intakeVictorPin,
+		beltVictorPin,
+		shootVictorPin,
 		gearDetectPin,
 		speedEncoderPin1,
 		speedEncoderPin2;
@@ -31,9 +31,9 @@ public class Manipulator {
 
 	
 	Manipulator(){
-		intakeTalon = new Talon(intakeTalonPin);
-		beltTalon = new Talon(beltTalonPin);
-		shootTalon = new Talon(shootTalonPin);
+		intakeVictor = new Victor(intakeVictorPin);
+		beltVictor = new Victor(beltVictorPin);
+		shootVictor = new Victor(shootVictorPin);
 		gearDetect = new DigitalInput(gearDetectPin);
 		speedEncoder = new Encoder(speedEncoderPin1,speedEncoderPin2);
 		
@@ -112,11 +112,11 @@ public class Manipulator {
 	
 	//shooting section
 	private void shootingStart(){
-		shootTalon.set(shootSpeed);
+		shootVictor.set(shootSpeed);
 		shootingStarted = true;
 	}
 	private void shootingStop(){
-		shootTalon.set(0);
+		shootVictor.set(0);
 		shootingStarted = false;
 	}
 	public boolean shootingStarted(){
@@ -126,25 +126,25 @@ public class Manipulator {
 	
 	//Intake roller section
 	private void intakeIN(){
-		intakeTalon.set(intakeSpeed);
+		intakeVictor.set(intakeSpeed);
 	}
 	private void intakeOUT(){
-		intakeTalon.set(-intakeSpeed);
+		intakeVictor.set(-intakeSpeed);
 	}
 	private void intakeSTOP(){
-		intakeTalon.set(0);
+		intakeVictor.set(0);
 	}
 	
 	
 	//feeding belt section
 	private void beltUP(){
-		beltTalon.set(beltSpeed);
+		beltVictor.set(beltSpeed);
 	}
 	private void beltDOWN(){
-		beltTalon.set(-beltSpeed);
+		beltVictor.set(-beltSpeed);
 	}
 	private void beltSTOP(){
-		beltTalon.set(0);
+		beltVictor.set(0);
 	}
 	
 	
