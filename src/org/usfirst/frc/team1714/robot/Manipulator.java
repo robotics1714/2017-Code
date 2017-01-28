@@ -22,12 +22,20 @@ public class Manipulator {
 	private double
 		intakeSpeed,
 		beltSpeed,
-		shootSpeed;
-	private boolean
+		shootInitialSpeed,
+		shootSpeed,
+		shootSpeedIncrement = 0.025, 
+		shootSpeedBuffer = 0.05,
+		expectedEncoderRate;//the ideal speed of the shooting wheel in terms of the encoder rate
+	
+	private boolean//boolean used to set up priority system which make sure feeding wheel and intake wheel won't run in wrong direction when shooting.
 		shootingStarted,
 		intakeIsOn,
 		intakeIsStop,
 		intakeIsReverse;
+	
+	public static double
+		EncoderRate;
 
 	
 	Manipulator(){
@@ -37,6 +45,7 @@ public class Manipulator {
 		gearDetect = new DigitalInput(gearDetectPin);
 		speedEncoder = new Encoder(speedEncoderPin1,speedEncoderPin2);
 		
+		shootSpeed = shootInitialSpeed;//have initial speed so that the shooting wheel don't have to speed up from zero
 	}
 	
 	public void update(
@@ -45,7 +54,7 @@ public class Manipulator {
 				boolean intakeStop, 
 				boolean intakeReverse, 
 				boolean feedBeltReverse){
-		
+		//shooting section
 		if(shoot){
 			shootingStart();
 			intakeIN();
@@ -57,6 +66,7 @@ public class Manipulator {
 			beltSTOP();
 		}
 		
+		//intake section
 		if(intakeOn && !intakeStop && !intakeReverse){
 			if(!intakeIsOn){
 				intakeIsOn = true;
@@ -102,6 +112,7 @@ public class Manipulator {
 			}
 		}
 		
+		//feeding belt section
 		if(feedBeltReverse){
 			if(!shootingStarted){
 				beltDOWN();
@@ -112,6 +123,14 @@ public class Manipulator {
 	
 	//shooting section
 	private void shootingStart(){
+		if(EncoderRate < (expectedEncoderRate - shootSpeedBuffer)){
+			shootSpeed = (shootVictor.getSpeed() + shootSpeedIncrement);
+			//if the speed is slower than the speed we want, increase the speed till the speed is within buffer zone
+		}
+		else if(EncoderRate > (expectedEncoderRate + shootSpeedBuffer)){
+			shootSpeed = (shootVictor.getSpeed() - shootSpeedIncrement);
+			//if the speed is faster than the speed we want, decrease the speed till the speed is within buffer zone
+		}
 		shootVictor.set(shootSpeed);
 		shootingStarted = true;
 	}
@@ -121,6 +140,12 @@ public class Manipulator {
 	}
 	public boolean shootingStarted(){
 		return shootingStarted;
+	}
+	public void resetSpeedEncoder(){
+		speedEncoder.reset();
+	}
+	public void recordEncoderRate(){
+		EncoderRate = speedEncoder.getRate();
 	}
 	
 	
@@ -146,6 +171,7 @@ public class Manipulator {
 	private void beltSTOP(){
 		beltVictor.set(0);
 	}
+	
 	
 	//coin slot gear detection
 	public boolean gearDetection(){

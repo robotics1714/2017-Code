@@ -21,12 +21,14 @@ public class Robot extends IterativeRobot {
 	SendableChooser<String> chooser = new SendableChooser<>();
 	
 	Servo cameraServo;
+	UsbCamera camera;
 	
 	DriveTrain train;
 	Manipulator manipulator;
 	Control control;
 	Autonomous auto;
 	
+	//Below are the variable that represent driver control input
 	public static boolean 
 		startCompressor,
 		stopCompressor,
@@ -39,10 +41,10 @@ public class Robot extends IterativeRobot {
 		intakeStop,
 		intakeReverse,
 		feedBeltReverse;
-	
 	public static double
 		leftStickX,
 		rightStickX;
+	//Above are the variable that represent driver control input
 	
 	private int
 		cameraServoPin;
@@ -60,6 +62,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
 		cameraServo = new Servo(cameraServoPin);
+		camera = CameraServer.getInstance().startAutomaticCapture();
 		
 		train = new DriveTrain();
 		manipulator = new Manipulator();
@@ -107,13 +110,14 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		manipulator.resetSpeedEncoder();//in every period this should be run first to reset the encoder for shooting wheel
 		//SmartDashboard section
 		SmartDashboard.putBoolean("Robot in high gear?", train.IsInHighGear());
 		SmartDashboard.putBoolean("Is PTO enabled?", train.IsPTOenable());
 		//SmartDashboard section
 		
 		
-		
+		manipulator.recordEncoderRate();//in every period this should be run last to record the rate of shooting wheel in the end of each period
 	}
 
 	/**

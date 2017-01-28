@@ -24,7 +24,7 @@ public class Control {
 		xboxStick = new XboxController(xboxPin);
 	}
 	
-	public void update(){
+	public void update(){//assign the value of the variable based on the input of the driver station
 		Robot.shiftHigh = rightStick.getRawButton(3);
 		Robot.shiftLow = rightStick.getRawButton(2);
 		Robot.enablePTO = leftStick.getRawButton(3);

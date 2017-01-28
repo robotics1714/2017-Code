@@ -3,14 +3,13 @@ package org.usfirst.frc.team1714.robot;
 import com.ctre.CANTalon; 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class DriveTrain {
 	 public CANTalon tRightFront, tRightRear, tLeftFront, tLeftRear;
-	 AnalogGyro gyro;
+	 
 	 private DoubleSolenoid shiftsolenoid,PTOsolenoid;
 	 Encoder leftEncoder,rightEncoder;
 	 private Compressor comp;
@@ -34,7 +33,6 @@ public class DriveTrain {
 	 	tRightRearPin,
 	 	tLeftFrontPin,
 	 	tLeftRearPin,
-	 	gyroPin,
 	 	shiftsolenoidPin1,
 	 	shiftsolenoidPin2,
 	 	PTOsolenoidPin1,
@@ -47,12 +45,12 @@ public class DriveTrain {
 	    tRightRear = new CANTalon(tRightRearPin);
 	    tLeftFront = new CANTalon(tLeftFrontPin);
 	    tLeftRear = new CANTalon(tLeftRearPin);
-	    gyro = new AnalogGyro(gyroPin);
+	   
 	    
 	    shiftsolenoid = new DoubleSolenoid(pcmID, shiftsolenoidPin1, shiftsolenoidPin2);
-	    //shiftsolenoid.set(DoubleSolenoid.Value.kForward);
+	    shiftsolenoid.set(DoubleSolenoid.Value.kForward);
 	    PTOsolenoid = new DoubleSolenoid(pcmID, PTOsolenoidPin1, PTOsolenoidPin2);
-	    //PTOsolenoid.set(DoubleSolenoid.Value.kForward);
+	    PTOsolenoid.set(DoubleSolenoid.Value.kForward);
     	comp = new Compressor(pcmID);
     	comp.setClosedLoopControl(true);
     	dStation = DriverStation.getInstance();
@@ -68,7 +66,7 @@ public class DriveTrain {
 			 	boolean shiftLow, 
 			 	boolean startCompressor, 
 			 	boolean stopCompressor){
-		 
+		 //driving section
 		 if(!PTOenabled){
 			 drive.tankDrive(Robot.leftStickX, Robot.rightStickX);
 		 }
@@ -83,6 +81,7 @@ public class DriveTrain {
 			 }
 		 }
 		 
+		 //PTO section
 		 if(enablePTO && !disablePTO){
 			 if(!PTOIsEnable){
 				 PTOIsEnable = true;
@@ -102,6 +101,7 @@ public class DriveTrain {
 			 }
 		 }
 		 
+		 //shifting section
 		 if (shiftLow && !shiftHigh) {
 			 	if(!gearShiftedLow){
 			 		gearShiftedLow = true;
@@ -122,6 +122,7 @@ public class DriveTrain {
 	    		}
 	    	}
 	    	
+		 //compressor section
 	    	if(stopCompressor && !startCompressor) {
 	    		if(!compressorIsOff){
 	    			compressorIsOff = true;
@@ -140,14 +141,10 @@ public class DriveTrain {
 	    			turnCompressorOn();
 	    		}
 	    	}
-	    	
-	    //if (resettingGyro) {
-	    //	resetGyro();
-	    //}	
 	 }
 	 //Power Take Off section
 	 private void PTOenable(){
-		 if(dStation.getMatchTime()<=30 && PTOsolenoid.get() == DoubleSolenoid.Value.kForward){
+		 if(dStation.getMatchTime() <= 30 && PTOsolenoid.get() == DoubleSolenoid.Value.kForward){//only enable PTO in the last 30s of the match
 			 PTOsolenoid.set(DoubleSolenoid.Value.kReverse);
 			 PTOenabled = true;
 		 }
@@ -174,16 +171,6 @@ public class DriveTrain {
 	  public boolean IsInHighGear(){
 		  return gearShiftedHigh;
 	  }
-	  
-	  /*
-	  //Gyro section
-	  public void setResetGyro() {
-	    	resettingGyro = true;
-	  }	    
-	  private void resetGyro() {
-	    	gyro.reset();
-			resettingGyro = false;
-	  }*/	  
 	  
 	  
 	  //Compressor section    
