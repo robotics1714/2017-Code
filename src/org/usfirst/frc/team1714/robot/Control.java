@@ -32,11 +32,11 @@ public class Control {
 		Robot.startCompressor = leftStick.getRawButton(tempPin);
 		Robot.stopCompressor = leftStick.getRawButton(tempPin);
 		
-		Robot.shoot = xboxStick.getRawButton(tempPin);
-		Robot.feedBeltReverse = xboxStick.getRawButton(tempPin);
-		Robot.intakeOn = xboxStick.getRawButton(tempPin);
-		Robot.intakeReverse = xboxStick.getRawButton(tempPin);
-		Robot.intakeStop = xboxStick.getRawButton(tempPin);
+		Robot.shoot = xboxStick.getAButton();
+		Robot.feedBeltReverse = xboxStick.getBackButton();
+		Robot.intakeOn = xboxStick.getYButton();
+		Robot.intakeReverse = xboxStick.getStartButton();
+		Robot.intakeStop = xboxStick.getBButton();
 		
 		Robot.leftStickX = leftStick.getAxis(Joystick.AxisType.kX);
 		Robot.rightStickX = rightStick.getAxis(Joystick.AxisType.kX);
