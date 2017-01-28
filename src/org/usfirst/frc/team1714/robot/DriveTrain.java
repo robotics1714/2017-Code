@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotDrive;
 
 public class DriveTrain {
 	 public CANTalon tRightFront, tRightRear, tLeftFront, tLeftRear;
@@ -14,12 +15,16 @@ public class DriveTrain {
 	 Encoder leftEncoder,rightEncoder;
 	 private Compressor comp;
 	 private DriverStation dStation;
+	 private RobotDrive drive;
+	 
 	 
 	 
 	 private boolean
 	 	PTOenabled,
 	 	PTOIsEnable,
 	 	PTOIsDisable,
+	 	gearShiftedLow,
+	 	gearShiftedHigh,
 	 	compressorIsOn,
 	 	compressorIsOff;
 	 
@@ -51,6 +56,9 @@ public class DriveTrain {
     	comp = new Compressor(pcmID);
     	comp.setClosedLoopControl(true);
     	dStation = DriverStation.getInstance();
+    	drive = new RobotDrive(tLeftFront, tLeftRear, tRightFront, tRightRear);
+    	
+    	
 	 }
 	 
 	 public void update(
@@ -61,25 +69,76 @@ public class DriveTrain {
 			 	boolean startCompressor, 
 			 	boolean stopCompressor){
 		 
-		 if(enablePTO){
-			 PTOenable();
+		 if(!PTOenabled){
+			 drive.tankDrive(Robot.leftStickX, Robot.rightStickX);
 		 }
 		 else{
-			 PTOdisable();
+			 if((Robot.leftStickX > 0 && Robot.rightStickX > 0) || (Robot.leftStickX < 0 && Robot.rightStickX < 0)){
+				 if(Robot.leftStickX > Robot.rightStickX){
+					 drive.tankDrive(Robot.leftStickX, Robot.leftStickX);
+				 }
+				 else if(Robot.leftStickX < Robot.rightStickX){
+					 drive.tankDrive(Robot.rightStickX, Robot.rightStickX);
+				 }
+			 }
 		 }
 		 
-		 if (shiftLow) {
-	    		shiftGearLow();
+		 if(enablePTO && !disablePTO){
+			 if(!PTOIsEnable){
+				 PTOIsEnable = true;
+				 PTOIsDisable = false;
+			 }
+			 else{
+				 PTOenable();
+			 }
+		 }
+		 else if(disablePTO && !enablePTO){
+			 if(!PTOIsDisable){
+				 PTOIsDisable = true;
+				 PTOIsEnable = false;
+			 }
+			 else{
+				 PTOdisable();
+			 }
+		 }
+		 
+		 if (shiftLow && !shiftHigh) {
+			 	if(!gearShiftedLow){
+			 		gearShiftedLow = true;
+			 		gearShiftedHigh = false;
+			 	}
+			 	else{
+			 		shiftGearLow();
+			 	}
+			 
 	    	}
-	    	else if (shiftHigh) {
-	    		shiftGearHigh();
+	    	else if (shiftHigh && !shiftLow) {
+	    		if(!gearShiftedHigh){
+	    			gearShiftedHigh = true;
+	    			gearShiftedLow = false;
+	    		}
+	    		else{
+	    			shiftGearHigh();
+	    		}
 	    	}
 	    	
-	    	if(stopCompressor) {
-	    		turnCompressorOff();
+	    	if(stopCompressor && !startCompressor) {
+	    		if(!compressorIsOff){
+	    			compressorIsOff = true;
+	    			compressorIsOn = false;
+	    		}
+	    		else{
+	    			turnCompressorOff();
+	    		}
 	    	}
-	    	else if(startCompressor) {
-	    		turnCompressorOn();
+	    	else if(startCompressor && !stopCompressor) {
+	    		if(!compressorIsOn){
+	    			compressorIsOn = true;
+	    			compressorIsOff = false;
+	    		}
+	    		else{
+	    			turnCompressorOn();
+	    		}
 	    	}
 	    	
 	    //if (resettingGyro) {

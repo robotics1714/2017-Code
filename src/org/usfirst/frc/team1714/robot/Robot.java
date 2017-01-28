@@ -33,6 +33,10 @@ public class Robot extends IterativeRobot {
 		intakeReverse,
 		feedBeltReverse;
 	
+	public static double
+		leftStickX,
+		rightStickX;
+	
 	private int
 		cameraServoPin;
 		
