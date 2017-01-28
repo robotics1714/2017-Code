@@ -159,6 +159,9 @@ public class DriveTrain {
 	 public boolean PTOenabled(){
 		 return PTOenabled;
 	 }
+	 public boolean IsPTOenable(){
+		 return PTOIsEnable;
+	 }
 	 
 	 
 	 //Shifting section
@@ -167,6 +170,9 @@ public class DriveTrain {
 	  }
 	  void shiftGearLow() {
 			shiftsolenoid.set(DoubleSolenoid.Value.kReverse);
+	  }
+	  public boolean IsInHighGear(){
+		  return gearShiftedHigh;
 	  }
 	  
 	  /*

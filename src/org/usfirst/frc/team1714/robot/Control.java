@@ -7,9 +7,6 @@ public class Control {
 	Joystick leftStick, rightStick;
 	XboxController xboxStick;
 	
-	//private DriveTrain train;
-	//private Manipulator manip;
-	
 	//Pin placeholder
 	private int
 		leftStickPin,
@@ -22,8 +19,6 @@ public class Control {
 	
 	
 	Control(){
-		//train = driveTrain;
-		//manip = manipulator;
 		leftStick = new Joystick(leftStickPin);
 		rightStick = new Joystick(rightStickPin);
 		xboxStick = new XboxController(xboxPin);

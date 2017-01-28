@@ -2,6 +2,8 @@ package org.usfirst.frc.team1714.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -19,6 +21,11 @@ public class Robot extends IterativeRobot {
 	SendableChooser<String> chooser = new SendableChooser<>();
 	
 	Servo cameraServo;
+	
+	DriveTrain train;
+	Manipulator manipulator;
+	Control control;
+	Autonomous auto;
 	
 	public static boolean 
 		startCompressor,
@@ -53,6 +60,11 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
 		cameraServo = new Servo(cameraServoPin);
+		
+		train = new DriveTrain();
+		manipulator = new Manipulator();
+		control = new Control();
+		auto = new Autonomous();
 	}
 
 	/**
@@ -95,6 +107,13 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		//SmartDashboard section
+		SmartDashboard.putBoolean("Robot in high gear?", train.IsInHighGear());
+		SmartDashboard.putBoolean("Is PTO enabled?", train.IsPTOenable());
+		//SmartDashboard section
+		
+		
+		
 	}
 
 	/**

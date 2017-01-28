@@ -147,7 +147,10 @@ public class Manipulator {
 		beltVictor.set(0);
 	}
 	
-	
+	//coin slot gear detection
+	public boolean gearDetection(){
+		return gearDetect.get();
+	}
 	
 	
 	
