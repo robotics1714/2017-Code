@@ -38,8 +38,8 @@ public class Control {
 		Robot.intakeReverse = xboxStick.getStartButton();
 		Robot.intakeStop = xboxStick.getBButton();
 		
-		Robot.leftStickX = leftStick.getAxis(Joystick.AxisType.kX);
-		Robot.rightStickX = rightStick.getAxis(Joystick.AxisType.kX);
+		Robot.leftStickY = leftStick.getAxis(Joystick.AxisType.kY);
+		Robot.rightStickY = rightStick.getAxis(Joystick.AxisType.kY);
 	}
 	  	
 }

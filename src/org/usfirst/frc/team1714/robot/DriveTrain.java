@@ -71,18 +71,20 @@ public class DriveTrain {
 			 	boolean shiftHigh, 
 			 	boolean shiftLow, 
 			 	boolean startCompressor, 
-			 	boolean stopCompressor){
+			 	boolean stopCompressor,
+			 	double leftStickY,
+			 	double rightStickY){
 		 //driving section
 		 if(!PTOenabled){
-			 drive.tankDrive(Robot.leftStickX, Robot.rightStickX);
+			 drive.tankDrive(Robot.leftStickY, Robot.rightStickY);
 		 }
 		 else{
-			 if((Robot.leftStickX > 0 && Robot.rightStickX > 0) || (Robot.leftStickX < 0 && Robot.rightStickX < 0)){
-				 if(Robot.leftStickX > Robot.rightStickX){
-					 drive.tankDrive(Robot.leftStickX, Robot.leftStickX);
+			 if((leftStickY > 0 && rightStickY > 0) || (leftStickY < 0 && rightStickY < 0)){
+				 if(leftStickY > rightStickY){
+					 drive.tankDrive(leftStickY, leftStickY);
 				 }
-				 else if(Robot.leftStickX < Robot.rightStickX){
-					 drive.tankDrive(Robot.rightStickX, Robot.rightStickX);
+				 else if(leftStickY < rightStickY){
+					 drive.tankDrive(rightStickY, rightStickY);
 				 }
 			 }
 		 }

@@ -42,8 +42,8 @@ public class Robot extends IterativeRobot {
 		intakeReverse,
 		feedBeltReverse;
 	public static double
-		leftStickX,
-		rightStickX;
+		leftStickY,
+		rightStickY;
 	//Above are the variable that represent driver control input
 	
 	private int
@@ -109,6 +109,9 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Robot in high gear?", train.IsInHighGear());
 		SmartDashboard.putBoolean("Is PTO enabled?", train.IsPTOenable());
 		//SmartDashboard section
+		control.update();
+		train.update(enablePTO, disablePTO, shiftHigh, shiftLow, startCompressor, stopCompressor,leftStickY, rightStickY);
+		manipulator.update(shoot, intakeOn, intakeStop, intakeReverse, feedBeltReverse);
 		
 		
 		manipulator.recordEncoderRate();//in every period this should be run last to record the rate of shooting wheel in the end of each period
