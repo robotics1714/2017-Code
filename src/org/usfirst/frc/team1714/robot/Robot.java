@@ -47,7 +47,7 @@ public class Robot extends IterativeRobot {
 	//Above are the variable that represent driver control input
 	
 	private int
-		cameraServoPin;
+		cameraServoPin = 6; //PWM port 6
 		
 		
 	
@@ -58,9 +58,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		chooser.addDefault("Default Auto", defaultAuto);
-		chooser.addObject("My Auto", customAuto);
-		SmartDashboard.putData("Auto choices", chooser);
 		cameraServo = new Servo(cameraServoPin);
 		camera = CameraServer.getInstance().startAutomaticCapture();
 		
@@ -83,9 +80,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autoSelected = chooser.getSelected();
-		// autoSelected = SmartDashboard.getString("Auto Selector",
-		// defaultAuto);
 		System.out.println("Auto selected: " + autoSelected);
 	}
 

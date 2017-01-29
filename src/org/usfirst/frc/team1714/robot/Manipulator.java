@@ -11,12 +11,12 @@ public class Manipulator {
 	
 	//Pin placeholder
 	private int
-		intakeVictorPin,
-		beltVictorPin,
-		shootVictorPin,
-		gearDetectPin,
-		speedEncoderPin1,
-		speedEncoderPin2;
+		intakeVictorPin 	= 9, //PWM port 9
+		beltVictorPin 		= 8, //PWM port 8
+		shootVictorPin 		= 7, //PWM port 7
+		gearDetectPin 		= 11, //digital port 11
+		speedEncoderPin1 	= 4, //digital port 4
+		speedEncoderPin2 	= 5; //digital port 5
 	//Pin placeholder
 	
 	private double
@@ -24,9 +24,10 @@ public class Manipulator {
 		beltSpeed,
 		shootInitialSpeed,
 		shootSpeed,
-		shootSpeedIncrement = 0.025, 
-		shootSpeedBuffer = 0.05,
-		expectedEncoderRate;//the ideal speed of the shooting wheel in terms of the encoder rate
+		shootSpeedIncrement 	= 0.025, 
+		shootSpeedBuffer 		= 0.05,
+		expectedEncoderRate,//the ideal speed of the shooting wheel in terms of the encoder rate
+	 	encoderRate;
 	
 	private boolean//boolean used to set up priority system which make sure feeding wheel and intake wheel won't run in wrong direction when shooting.
 		shootingStarted,
@@ -34,9 +35,6 @@ public class Manipulator {
 		intakeIsStop,
 		intakeIsReverse;
 	
-	public static double
-		EncoderRate;
-
 	
 	Manipulator(){
 		intakeVictor = new Victor(intakeVictorPin);
@@ -123,11 +121,11 @@ public class Manipulator {
 	
 	//shooting section
 	private void shootingStart(){
-		if(EncoderRate < (expectedEncoderRate - shootSpeedBuffer)){
+		if(encoderRate < (expectedEncoderRate - shootSpeedBuffer)){
 			shootSpeed = (shootVictor.getSpeed() + shootSpeedIncrement);
 			//if the speed is slower than the speed we want, increase the speed till the speed is within buffer zone
 		}
-		else if(EncoderRate > (expectedEncoderRate + shootSpeedBuffer)){
+		else if(encoderRate > (expectedEncoderRate + shootSpeedBuffer)){
 			shootSpeed = (shootVictor.getSpeed() - shootSpeedIncrement);
 			//if the speed is faster than the speed we want, decrease the speed till the speed is within buffer zone
 		}
@@ -145,7 +143,7 @@ public class Manipulator {
 		speedEncoder.reset();
 	}
 	public void recordEncoderRate(){
-		EncoderRate = speedEncoder.getRate();
+		encoderRate = speedEncoder.getRate();
 	}
 	
 	

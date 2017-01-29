@@ -37,7 +37,11 @@ public class DriveTrain {
 	 	shiftsolenoidPin2,
 	 	PTOsolenoidPin1,
 	 	PTOsolenoidPin2,
-	 	pcmID;
+	 	pcmID,
+	 	leftEncoderPin1 	= 2, //digital port 2 
+	 	leftEncoderPin2 	= 3, //digital port 3
+	 	rightEncoderPin1 	= 0, //digital port 0
+	 	rightEncoderPin2 	= 1; //digital port 1
 	 //Pin placeholder
 	 
 	 DriveTrain(){
@@ -45,6 +49,8 @@ public class DriveTrain {
 	    tRightRear = new CANTalon(tRightRearPin);
 	    tLeftFront = new CANTalon(tLeftFrontPin);
 	    tLeftRear = new CANTalon(tLeftRearPin);
+	    leftEncoder = new Encoder(leftEncoderPin1,leftEncoderPin2);
+	    rightEncoder = new Encoder(rightEncoderPin1, rightEncoderPin2);
 	   
 	    
 	    shiftsolenoid = new DoubleSolenoid(pcmID, shiftsolenoidPin1, shiftsolenoidPin2);

@@ -11,11 +11,11 @@ public class Autonomous {
 	
 	//Pin placeholder
 	private int
-		frontUSonicPin1,
-		frontUSonicPin2,
-		rearUSonicPin1,
-		rearUSonicPin2,
-		gyroPin;
+		frontUSonicPin1 	= 6, //digital port 6
+		frontUSonicPin2 	= 7, //digital port 7
+		rearUSonicPin1 		= 8, //digital port 8
+		rearUSonicPin2 		= 9, //digital port 9 
+		gyroPin 			= 0; //analog port 0
 	//Pin placeholder
 	
 	Autonomous(){

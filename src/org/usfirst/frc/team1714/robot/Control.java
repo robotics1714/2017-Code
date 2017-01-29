@@ -9,12 +9,12 @@ public class Control {
 	
 	//Pin placeholder
 	private int
-		leftStickPin,
-		rightStickPin,
-		xboxPin;
+		leftStickPin 	= 0, //USB device number 0
+		rightStickPin 	= 1, //USB device number 1
+		xboxPin			= 2; //USB device number 2
 	//Pin placeholder
 	
-	int tempPin;
+	//int tempPin;
 	
 	
 	
@@ -29,8 +29,8 @@ public class Control {
 		Robot.shiftLow = rightStick.getRawButton(2);
 		Robot.enablePTO = leftStick.getRawButton(3);
 		Robot.disablePTO = leftStick.getRawButton(2);
-		Robot.startCompressor = leftStick.getRawButton(tempPin);
-		Robot.stopCompressor = leftStick.getRawButton(tempPin);
+		Robot.startCompressor = leftStick.getRawButton(9);
+		Robot.stopCompressor = leftStick.getRawButton(8);
 		
 		Robot.shoot = xboxStick.getAButton();
 		Robot.feedBeltReverse = xboxStick.getBackButton();
