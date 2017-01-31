@@ -59,7 +59,14 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		cameraServo = new Servo(cameraServoPin);
+		
+		// camera setup + settings
 		camera = CameraServer.getInstance().startAutomaticCapture();
+		camera.setVideoMode(VideoMode.PixelFormat.kMJPEG, 320, 240, 30);
+		camera.setExposureManual(5);
+		camera.setExposureHoldCurrent();
+		camera.setWhiteBalanceManual(4500);
+		camera.setWhiteBalanceHoldCurrent();
 		
 		train = new DriveTrain();
 		manipulator = new Manipulator();
