@@ -52,6 +52,10 @@ public class Manipulator {
 				boolean intakeStop, 
 				boolean intakeReverse, 
 				boolean feedBeltReverse){
+		
+		recordEncoderRate();//in every period this should be run last to record the rate of shooting wheel in the end of each period
+		resetSpeedEncoder();//in every period this should be run first to reset the encoder for shooting wheel
+		
 		//shooting section
 		if(shoot){
 			shootingStart();

@@ -3,7 +3,7 @@ package org.usfirst.frc.team1714.robot;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -19,7 +19,7 @@ public class Robot extends IterativeRobot {
 	final String rsAuto = "Red Shooting";
 	final String lgAuto = "Left Gear";
 	final String mgAuto = "Middle Gear";
-	final string rgAuto = "Right Gear";
+	final String rgAuto = "Right Gear";
 	
 	String autoSelected;
 	SendableChooser<String> autoChooser;
@@ -63,11 +63,11 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		autoChooser = new SendableChooser<>();
-		autoChooser.addObject(bsAuto);
-		autoChooser.addObject(rsAuto);
-		autoChooser.addObject(rgAuto);
-		autoChooser.addObject(mgAuto);
-		autoChooser.addObject(lgAuto);
+		autoChooser.addObject(bsAuto, bsAuto);
+		autoChooser.addObject(rsAuto, rsAuto);
+		autoChooser.addObject(rgAuto, rgAuto);
+		autoChooser.addObject(mgAuto, mgAuto);
+		autoChooser.addObject(lgAuto, lgAuto);
 		SmartDashboard.putData("Autonomous: ", autoChooser);
 		
 		cameraServo = new Servo(cameraServoPin);
@@ -108,32 +108,38 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		switch (autoSelected) {
-		case customAuto:
-			// Put custom auto code here
+		case bsAuto:
+			auto.blueShooting();
 			break;
-		case defaultAuto:
-		default:
-			// Put default auto code here
+		case rsAuto:
+			auto.redShooting();
+			break;
+		case lgAuto:
+			auto.leftGear();
+			break;
+		case mgAuto:
+			auto.middleGear();
+			break;
+		case rgAuto:
+			auto.rightGear();
 			break;
 		}
+		train.update(enablePTO, disablePTO, shiftHigh, shiftLow, startCompressor, stopCompressor, leftStickY, rightStickY);
+		manipulator.update(shoot, intakeOn, intakeStop, intakeReverse, feedBeltReverse);
 	}
 
 	/**
 	 * This function is called periodically during operator control
 	 */
 	@Override
-	public void teleopPeriodic() {
-		manipulator.resetSpeedEncoder();//in every period this should be run first to reset the encoder for shooting wheel
+	public void teleopPeriodic() {		
 		//SmartDashboard section
 		SmartDashboard.putBoolean("Robot in high gear?", train.IsInHighGear());
 		SmartDashboard.putBoolean("Is PTO enabled?", train.IsPTOenable());
-		//SmartDashboard section
+		
 		control.update();
 		train.update(enablePTO, disablePTO, shiftHigh, shiftLow, startCompressor, stopCompressor,leftStickY, rightStickY);
 		manipulator.update(shoot, intakeOn, intakeStop, intakeReverse, feedBeltReverse);
-		
-		
-		manipulator.recordEncoderRate();//in every period this should be run last to record the rate of shooting wheel in the end of each period
 	}
 
 	/**
