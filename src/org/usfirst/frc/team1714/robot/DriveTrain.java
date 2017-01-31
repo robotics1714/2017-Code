@@ -11,7 +11,6 @@ public class DriveTrain {
 	 public CANTalon tRightFront, tRightRear, tLeftFront, tLeftRear;
 	 
 	 private DoubleSolenoid shiftsolenoid,PTOsolenoid;
-	 Encoder leftEncoder,rightEncoder;
 	 private Compressor comp;
 	 private DriverStation dStation;
 	 private RobotDrive drive;
@@ -37,11 +36,7 @@ public class DriveTrain {
 	 	shiftsolenoidPin2,
 	 	PTOsolenoidPin1,
 	 	PTOsolenoidPin2,
-	 	pcmID,
-	 	leftEncoderPin1 	= 2, //digital port 2 
-	 	leftEncoderPin2 	= 3, //digital port 3
-	 	rightEncoderPin1 	= 0, //digital port 0
-	 	rightEncoderPin2 	= 1; //digital port 1
+	 	pcmID;
 	 //Pin placeholder
 	 
 	 DriveTrain(){
@@ -49,8 +44,7 @@ public class DriveTrain {
 	    tRightRear = new CANTalon(tRightRearPin);
 	    tLeftFront = new CANTalon(tLeftFrontPin);
 	    tLeftRear = new CANTalon(tLeftRearPin);
-	    leftEncoder = new Encoder(leftEncoderPin1,leftEncoderPin2);
-	    rightEncoder = new Encoder(rightEncoderPin1, rightEncoderPin2);
+	    
 	   
 	    
 	    shiftsolenoid = new DoubleSolenoid(pcmID, shiftsolenoidPin1, shiftsolenoidPin2);
@@ -79,12 +73,12 @@ public class DriveTrain {
 			 drive.tankDrive(Robot.leftStickY, Robot.rightStickY);
 		 }
 		 else{
-			 if((leftStickY > 0 && rightStickY > 0) || (leftStickY < 0 && rightStickY < 0)){
+			 if((leftStickY > 0 && rightStickY > 0) || (leftStickY < 0 && rightStickY < 0)){//if both joystick is either in positive or negative direction
 				 if(leftStickY > rightStickY){
-					 drive.tankDrive(leftStickY, leftStickY);
+					 drive.tankDrive(leftStickY, leftStickY);//if left joystick Y value is bigger, use left joystick Y value for both joystick
 				 }
 				 else if(leftStickY < rightStickY){
-					 drive.tankDrive(rightStickY, rightStickY);
+					 drive.tankDrive(rightStickY, rightStickY);//if right joystick Y value is bigger, use right joystick Y value for both joystick
 				 }
 			 }
 		 }
