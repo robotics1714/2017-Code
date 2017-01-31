@@ -15,10 +15,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	final String defaultAuto = "Default";
-	final String customAuto = "My Auto";
+	final String bsAuto = "Blue Shooting";
+	final String rsAuto = "Red Shooting";
+	final String lgAuto = "Left Gear";
+	final String mgAuto = "Middle Gear";
+	final string rgAuto = "Right Gear";
+	
 	String autoSelected;
-	SendableChooser<String> chooser = new SendableChooser<>();
+	SendableChooser<String> autoChooser;
 	
 	Servo cameraServo;
 	UsbCamera camera;
@@ -58,6 +62,14 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		autoChooser = new SendableChooser<>();
+		autoChooser.addObject(bsAuto);
+		autoChooser.addObject(rsAuto);
+		autoChooser.addObject(rgAuto);
+		autoChooser.addObject(mgAuto);
+		autoChooser.addObject(lgAuto);
+		SmartDashboard.putData("Autonomous: ", autoChooser);
+		
 		cameraServo = new Servo(cameraServoPin);
 		
 		// camera setup + settings
