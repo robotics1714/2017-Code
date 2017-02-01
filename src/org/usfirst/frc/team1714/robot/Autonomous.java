@@ -11,6 +11,20 @@ public class Autonomous {
 	private AnalogGyro gyro;
 	private Encoder leftEncoder,rightEncoder;
 	
+	private enum leftGearSelection{
+		stage1, stage2, stage3, stage4
+	}
+	private leftGearSelection lGearSelect;
+	private enum middleGearSelection{
+		stage1, stage2, stage3, stage4
+	}
+	private middleGearSelection mGearSelect;
+	private enum rightGearSelection{
+		stage1, stage2, stage3, stage4
+	}
+	private rightGearSelection rGearSelect;
+	
+	
 	//Pin placeholder
 	private int
 		frontUSonicPin1 	= 6, //digital port 6
@@ -23,6 +37,8 @@ public class Autonomous {
 		rightEncoderPin2 	= 1, //digital port 1
 		gyroPin 			= 0; //analog port 0
 	//Pin placeholder
+	
+	double temp;
 	
 	Autonomous(){
 		 gyro = new AnalogGyro(gyroPin);
@@ -46,7 +62,10 @@ public class Autonomous {
 	}
 	
 	public void middleGear(){
-		
+		switch(mGearSelect){
+		case stage1:
+			if(frontUSonic.getRangeInches())
+		}
 	}
 	
 	public void rightGear(){
