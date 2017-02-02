@@ -49,13 +49,13 @@ public class Autonomous {
 		stage1, stage2, stage3, stage4, stage5, stage6, stage7
 	}
 	int currentShootingStage = stage1;
-	bool timerStarted = false;
+	boolean timerStarted = false;
 	double startingTime;
 	
 	//blue = false, red = true
 	public void shooting(boolean color){
 		switch(currentShootingStage){
-			case stage1:
+			case shootingStages.stage1:
 				if(rearUSonic.getRangeInches() > temp)
 				{
 					Robot.rightStickY = -0.5;
@@ -67,7 +67,7 @@ public class Autonomous {
 					currentShootingStage++;
 				}
 				break;
-			case stage2:
+			case shootingStages.stage2:
 				if(gyro.getAngle() > temp){
 					Robot.leftStickY = -0.75;
 					Robot.rightStickY = -0.5;
@@ -76,7 +76,7 @@ public class Autonomous {
 					currentShootingStage++;
 				}
 				break;
-			case stage3:
+			case shootingStages.stage3:
 				if(rearUSonic.getRangeInches() > temp)
 				{
 					Robot.rightStickY = -0.3;
@@ -88,7 +88,7 @@ public class Autonomous {
 					currentShootingStage++;
 				}
 				break;
-			case stage4:
+			case shootingStages.stage4:
 				if(!timerStarted){
 					startingTime = Timer.getFPGATimestamp();
 					timerStarted = true;
@@ -97,13 +97,13 @@ public class Autonomous {
 					currentShootingStage++;
 				}
 				break;
-			case stage5:
+			case shootingStages.stage5:
 				//turn into boiler
 				break;
-			case stage6:
+			case shootingStages.stage6:
 				//ram into boiler
 				break;
-			case stage7:
+			case shootingStages.stage7:
 				//shoot
 				break;
 		}
