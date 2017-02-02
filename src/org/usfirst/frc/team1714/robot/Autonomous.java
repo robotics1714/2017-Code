@@ -10,18 +10,15 @@ public class Autonomous {
 	private AnalogGyro gyro;
 	private Encoder leftEncoder,rightEncoder;
 	
-	private enum leftGearSelection{
-		stage1, stage2, stage3, stage4
+	private enum sideGearSelection{
+		stage1, stage2, stage3, stage4, stage5
 	}
-	private leftGearSelection lGearSelect;
+	private sideGearSelection sideStage;
+	
 	private enum middleGearSelection{
 		stage1, stage2, stage3, stage4
 	}
-	private middleGearSelection mGearSelect;
-	private enum rightGearSelection{
-		stage1, stage2, stage3, stage4
-	}
-	private rightGearSelection rGearSelect;
+	private middleGearSelection middleStage;
 	
 	
 	//Pin placeholder
@@ -45,19 +42,20 @@ public class Autonomous {
 		 rearUSonic = new Ultrasonic(rearUSonicPin1, rearUSonicPin2);
 		 leftEncoder = new Encoder(leftEncoderPin1,leftEncoderPin2);
 		 rightEncoder = new Encoder(rightEncoderPin1, rightEncoderPin2);
+		 
 	}
 	
 	private enum shootingStages{
 		stage1, stage2, stage3, stage4, stage5, stage6, stage7
 	}
 	int currentShootingStage = stage1;
-	boolean timerStarted = false;
+	bool timerStarted = false;
 	double startingTime;
 	
 	//blue = false, red = true
 	public void shooting(boolean color){
 		switch(currentShootingStage){
-			case shootingStages.stage1:
+			case stage1:
 				if(rearUSonic.getRangeInches() > temp)
 				{
 					Robot.rightStickY = -0.5;
@@ -69,7 +67,7 @@ public class Autonomous {
 					currentShootingStage++;
 				}
 				break;
-			case shootingStages.stage2:
+			case stage2:
 				if(gyro.getAngle() > temp){
 					Robot.leftStickY = -0.75;
 					Robot.rightStickY = -0.5;
@@ -78,7 +76,7 @@ public class Autonomous {
 					currentShootingStage++;
 				}
 				break;
-			case shootingStages.stage3:
+			case stage3:
 				if(rearUSonic.getRangeInches() > temp)
 				{
 					Robot.rightStickY = -0.3;
@@ -90,7 +88,7 @@ public class Autonomous {
 					currentShootingStage++;
 				}
 				break;
-			case shootingStages.stage4:
+			case stage4:
 				if(!timerStarted){
 					startingTime = Timer.getFPGATimestamp();
 					timerStarted = true;
@@ -99,36 +97,107 @@ public class Autonomous {
 					currentShootingStage++;
 				}
 				break;
-			case shootingStages.stage5:
+			case stage5:
 				//turn into boiler
 				break;
-			case shootingStages.stage6:
+			case stage6:
 				//ram into boiler
 				break;
-			case shootingStages.stage7:
+			case stage7:
 				//shoot
 				break;
 		}
 	}
 	
-	public void leftGear(){
-		
-	}
 	
 	public void middleGear(){
-		switch(mGearSelect){
-		case stage1:
-			if(frontUSonic.getRangeInches())
+		switch(middleStage){
+		default://drive forward till the robot reach the designated distance
+			if(frontUSonic.getRangeInches() >= temp){
+				Robot.leftStickY = temp;
+				Robot.rightStickY = temp;
+			}
+			else{
+				middleStage = middleGearSelection.stage2;
+			}
+			break;
+		case stage2:
+			//use camera tracking to line up the peg, reserved for Cool Guy
+			
+			//after action is done, let middleStage = middleGearSelection.stage3; to start next stage of action
+			break;
+		case stage3://Wriggle or drive in curve line to get the gear on
+			Robot.leftStickY = temp - temp;
+			Robot.rightStickY = temp + temp;
+			break;
+		
 		}
 	}
 	
-	public void rightGear(){
+	public void sideGear(){
+		switch(sideStage){
+		default://go straight for a certain distance
+			if(rearUSonic.getRangeInches() <= temp){
+				Robot.leftStickY = temp;
+				Robot.rightStickY = temp;
+			}
+			else{
+				gyro.reset();
+				sideStage = sideGearSelection.stage2;
+			}
+			break;
+			
+		case stage2:
+			if(Robot.doRightGear){//if we choose to do right gear
+				if(gyro.getAngle() < temp && gyro.getAngle() > temp){//if the robot haven't turn to the wanted angle range, keep turning left
+					Robot.leftStickY = -temp;
+					Robot.rightStickY = temp;
+				}
+				else if(gyro.getAngle() < temp && gyro.getAngle() > temp){//if the robot turn too much, turn right
+					Robot.leftStickY = temp;
+					Robot.rightStickY = -temp;
+				}
+				else if(gyro.getAngle() < temp && gyro.getAngle() > temp){//if the robot turn to the angle we wanted, proceed to next stage
+					sideStage = sideGearSelection.stage3;
+				}
+			}
+			else{	//if we choose to do left gear
+				if(gyro.getAngle() < temp && gyro.getAngle() > temp){//if the robot haven't turn to the wanted angle range, keep turning right
+					Robot.leftStickY = temp;
+					Robot.rightStickY = -temp;
+				}
+				else if(gyro.getAngle() < temp && gyro.getAngle() > temp){//if the robot turn too much, turn left
+					Robot.leftStickY = -temp;
+					Robot.rightStickY = temp;
+				}
+				else if(gyro.getAngle() < temp && gyro.getAngle() > temp){//if the robot turn to the angle we wanted, proceed to next stage
+					sideStage = sideGearSelection.stage3;
+				}
+			}
+			break;
+			
+		case stage3:
+			//use camera to line up with the peg, reserved for the Cool Guy
+			
+			//after this is done, use sideStage = sideGearSelection.stage4; to proceed to next stage of action
+			break;
+			
+		case stage4://go straight toward peg till robot is close
+			if(frontUSonic.getRangeInches() >= temp){
+				Robot.leftStickY = temp;
+				Robot.rightStickY = temp;
+			}
+			else{
+				sideStage = sideGearSelection.stage5;
+			}
+			break;
 		
+		case stage5://Wriggle or drive in curve line to get the gear on
+			Robot.leftStickY = temp - temp;
+			Robot.rightStickY = temp + temp;
+			break;
+		}
 	}
 	
-	//Gyro section   
-	  private void resetGyro() {
-	    	gyro.reset();
-	  }
-	
+
 }
