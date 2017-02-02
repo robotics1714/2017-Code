@@ -50,6 +50,8 @@ public class Robot extends IterativeRobot {
 		rightStickY;
 	//Above are the variable that represent driver control input
 	
+	public static boolean doRightGear;
+	
 	private int
 		cameraServoPin = 6; //PWM port 6
 		
@@ -115,13 +117,15 @@ public class Robot extends IterativeRobot {
 			auto.shooting(true);
 			break;
 		case lgAuto:
-			auto.leftGear();
+			doRightGear = false;
+			auto.sideGear();
 			break;
 		case mgAuto:
 			auto.middleGear();
 			break;
 		case rgAuto:
-			auto.rightGear();
+			doRightGear = true;
+			auto.sideGear();
 			break;
 		}
 		train.update(enablePTO, disablePTO, shiftHigh, shiftLow, startCompressor, stopCompressor, leftStickY, rightStickY);
