@@ -2,7 +2,6 @@ package org.usfirst.frc.team1714.robot;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
-
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 
@@ -48,13 +47,68 @@ public class Autonomous {
 		 rightEncoder = new Encoder(rightEncoderPin1, rightEncoderPin2);
 	}
 	
-	
-	public void blueShooting(){
-		
+	private enum shootingStages{
+		stage1, stage2, stage3, stage4, stage5, stage6, stage7
 	}
+	int currentShootingStage = stage1;
+	bool timerStarted = false;
+	double startingTime;
 	
-	public void redShooting(){
-		
+	//blue = false, red = true
+	public void shooting(boolean color){
+		switch(currentShootingStage){
+			case stage1:
+				if(rearUSonic.getRangeInches() > temp)
+				{
+					Robot.rightStickY = -0.5;
+					Robot.leftStickY =  -0.5;
+				}
+				else{
+					Robot.rightStickY = 0;
+					Robot.leftStickY = 0;
+					currentShootingStage++;
+				}
+				break;
+			case stage2:
+				if(gyro.getAngle() > temp){
+					Robot.leftStickY = -0.75;
+					Robot.rightStickY = -0.5;
+				}
+				else{
+					currentShootingStage++;
+				}
+				break;
+			case stage3:
+				if(rearUSonic.getRangeInches() > temp)
+				{
+					Robot.rightStickY = -0.3;
+					Robot.leftStickY =  -0.3;
+				}
+				else{
+					Robot.rightStickY = 0;
+					Robot.leftStickY = 0;
+					currentShootingStage++;
+				}
+				break;
+			case stage4:
+				if(!timerStarted){
+					startingTime = Timer.getFPGATimestamp();
+					timerStarted = true;
+				}
+				if((Timer.getFPGATimestamp - startingTime) > 3){
+					currentShootingStage++;
+				}
+				break;
+			case stage5:
+				//turn into boiler
+				break;
+			case stage6:
+				//ram into boiler
+				break;
+			case stage7:
+				//shoot
+				break;
+		}
 	}
 	
 	public void leftGear(){

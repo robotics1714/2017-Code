@@ -109,10 +109,10 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 		switch (autoSelected) {
 		case bsAuto:
-			auto.blueShooting();
+			auto.shooting(false);
 			break;
 		case rsAuto:
-			auto.redShooting();
+			auto.shooting(true);
 			break;
 		case lgAuto:
 			auto.leftGear();
