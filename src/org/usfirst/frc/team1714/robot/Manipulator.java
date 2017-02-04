@@ -126,11 +126,11 @@ public class Manipulator {
 	//shooting section
 	private void shootingStart(){
 		if(encoderRate < (expectedEncoderRate - shootSpeedBuffer)){
-			shootSpeed = (shootVictor.getSpeed() + shootSpeedIncrement);
+			shootSpeed = (shootVictor.get() + shootSpeedIncrement);
 			//if the speed is slower than the speed we want, increase the speed till the speed is within buffer zone
 		}
 		else if(encoderRate > (expectedEncoderRate + shootSpeedBuffer)){
-			shootSpeed = (shootVictor.getSpeed() - shootSpeedIncrement);
+			shootSpeed = (shootVictor.get() - shootSpeedIncrement);
 			//if the speed is faster than the speed we want, decrease the speed till the speed is within buffer zone
 		}
 		shootVictor.set(shootSpeed);
