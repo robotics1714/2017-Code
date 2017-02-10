@@ -101,7 +101,7 @@ public class Autonomous {
 				//ram into boiler
 				break;
 			case 6:
-				//shoot
+				Robot.shoot = true;
 				break;
 		}
 	}
