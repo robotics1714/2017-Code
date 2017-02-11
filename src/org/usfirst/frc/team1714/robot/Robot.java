@@ -27,6 +27,8 @@ public class Robot extends IterativeRobot {
 	Servo cameraServo;
 	UsbCamera camera;
 	
+	PowerDistributionPanel pdp;
+	
 	DriveTrain train;
 	Manipulator manipulator;
 	Control control;

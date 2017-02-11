@@ -59,6 +59,19 @@ public class DriveTrain {
     	
 	 }
 	 
+	 int placeholder;
+	 boolean currentStop()
+	 {
+		 if(Robot.pdp.getCurrent(placeholder) > placeholder)
+		 {
+			 return true;
+		 }
+		 else
+		 {
+			 return false;
+		 }
+	 }
+	 
 	 public void update(
 			 	boolean enablePTO,
 			 	boolean disablePTO, 
