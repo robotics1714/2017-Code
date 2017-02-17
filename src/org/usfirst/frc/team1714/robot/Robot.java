@@ -135,11 +135,40 @@ public class Robot extends IterativeRobot {
 	/**
 	 * This function is called periodically during operator control
 	 */
+	
+	//DEBUG VARS REMOVE LATER
+	boolean lastCycle10 = false;
+	boolean lastCycle11 = false;
+	
 	@Override
 	public void teleopPeriodic() {		
 		//SmartDashboard section
 		SmartDashboard.putBoolean("Robot in high gear?", train.IsInHighGear());
 		SmartDashboard.putBoolean("Is PTO enabled?", train.IsPTOenable());
+		SmartDashboard.putBoolean("Do we have gear?", manipulator.gearDetection());
+		SmartDashboard.putNumber("Gyro angle",auto.gyro.getAngle());
+		SmartDashboard.putNumber("Rear Ultrasonic reading", auto.gearUSonic.getRangeInches());
+		SmartDashboard.putNumber("Front Ultrasonic reading", auto.intakeUSonic.getRangeInches());
+		SmartDashboard.putNumber("Shooting wheel encoder value", manipulator.speedEncoder.get());
+		SmartDashboard.putNumber("Left drive train encoder value", auto.leftEncoder.get());
+		SmartDashboard.putNumber("Right drive train encoder value", auto.rightEncoder.get());
+		SmartDashboard.putNumber("Servo value", cameraServo.get());
+		SmartDashboard.putBoolean("button:", control.leftStick.getRawButton(10));
+		SmartDashboard.putBoolean("camerathing", lastCycle10);
+		SmartDashboard.putNumber("servovalue", cameraServo.get());
+		
+		// DEBUG CODE REMOVE LATER
+		if(control.leftStick.getRawButton(10) && !lastCycle10)
+		{
+			cameraServo.set((cameraServo.get()+0.05));
+		}
+		lastCycle10 = control.leftStick.getRawButton(10);
+		if(control.leftStick.getRawButton(11) && !lastCycle11)
+		{
+			cameraServo.set((cameraServo.get()+0.05));
+		}
+		lastCycle11 = control.leftStick.getRawButton(11);
+		
 		
 		control.update();
 		train.update(enablePTO, disablePTO, shiftHigh, shiftLow, startCompressor, stopCompressor,leftStickY, rightStickY);

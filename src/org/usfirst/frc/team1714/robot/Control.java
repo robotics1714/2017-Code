@@ -9,8 +9,8 @@ public class Control {
 	
 	//Pin placeholder
 	private int
-		leftStickPin 	= 0, //USB device number 0
-		rightStickPin 	= 1, //USB device number 1
+		leftStickPin 	= 1, //USB device number 0
+		rightStickPin 	= 0, //USB device number 1
 		xboxPin			= 2; //USB device number 2
 	//Pin placeholder
 	
@@ -38,8 +38,8 @@ public class Control {
 		Robot.intakeReverse = xboxStick.getStartButton();
 		Robot.intakeStop = xboxStick.getBButton();
 		
-		Robot.leftStickY = leftStick.getAxis(Joystick.AxisType.kY);
-		Robot.rightStickY = rightStick.getAxis(Joystick.AxisType.kY);
+		Robot.leftStickY = - leftStick.getAxis(Joystick.AxisType.kY);
+		Robot.rightStickY = - rightStick.getAxis(Joystick.AxisType.kY);
 	}
 	  	
 }

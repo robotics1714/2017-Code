@@ -1,11 +1,11 @@
 package org.usfirst.frc.team1714.robot;
 
-import com.ctre.CANTalon; 
-import edu.wpi.first.wpilibj.Encoder;
+import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+
 
 public class DriveTrain {
 	 public CANTalon tRightFront, tRightRear, tLeftFront, tLeftRear;
@@ -14,6 +14,7 @@ public class DriveTrain {
 	 private Compressor comp;
 	 private DriverStation dStation;
 	 private RobotDrive drive;
+	 
 	 
 	 
 	 
@@ -28,15 +29,15 @@ public class DriveTrain {
 	 
 	 //Pin placeholder
 	 private int
-	 	tRightFrontPin,
-	 	tRightRearPin,
-	 	tLeftFrontPin,
-	 	tLeftRearPin,
-	 	shiftsolenoidPin1,
-	 	shiftsolenoidPin2,
-	 	PTOsolenoidPin1,
-	 	PTOsolenoidPin2,
-	 	pcmID;
+	 	tRightFrontPin =2,
+	 	tRightRearPin =3,
+	 	tLeftFrontPin = 0,
+	 	tLeftRearPin = 1,
+	 	shiftsolenoidPin1 = 7,
+	 	shiftsolenoidPin2 = 1, 
+	 	PTOsolenoidPin1 = 0,
+	 	PTOsolenoidPin2 = 6,
+	 	pcmID = 10 ;
 	 //Pin placeholder
 	 
 	 DriveTrain(){
@@ -74,10 +75,10 @@ public class DriveTrain {
 		 }
 		 else{
 			 if((leftStickY > 0 && rightStickY > 0) || (leftStickY < 0 && rightStickY < 0)){//if both joystick is either in positive or negative direction
-				 if(leftStickY > rightStickY){
+				 if(leftStickY < rightStickY){
 					 drive.tankDrive(leftStickY, leftStickY);//if left joystick Y value is bigger, use left joystick Y value for both joystick
 				 }
-				 else if(leftStickY < rightStickY){
+				 else if(leftStickY > rightStickY){
 					 drive.tankDrive(rightStickY, rightStickY);//if right joystick Y value is bigger, use right joystick Y value for both joystick
 				 }
 			 }

@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj.Encoder;
 
 public class Manipulator {
 	private Victor intakeVictor, beltVictor, shootVictor;
-	private DigitalInput gearDetect;
-	private Encoder speedEncoder;
+	public DigitalInput gearDetect;
+	public Encoder speedEncoder;
 	
 	//Pin placeholder
 	private int
@@ -20,9 +20,9 @@ public class Manipulator {
 	//Pin placeholder
 	
 	private double
-		intakeSpeed,
-		beltSpeed,
-		shootInitialSpeed,
+		intakeSpeed = 0.05,
+		beltSpeed = 0.25,
+		shootInitialSpeed = 0.05,
 		shootSpeed,
 		shootSpeedIncrement 	= 0.025, 
 		shootSpeedBuffer 		= 0.05,
@@ -54,7 +54,7 @@ public class Manipulator {
 				boolean feedBeltReverse){
 		
 		recordEncoderRate();//in every period this should be run last to record the rate of shooting wheel in the end of each period
-		resetSpeedEncoder();//in every period this should be run first to reset the encoder for shooting wheel
+		//resetSpeedEncoder();//in every period this should be run first to reset the encoder for shooting wheel
 		
 		//shooting section
 		if(shoot){
@@ -165,10 +165,10 @@ public class Manipulator {
 	
 	//feeding belt section
 	private void beltUP(){
-		beltVictor.set(beltSpeed);
+		beltVictor.set(-beltSpeed);
 	}
 	private void beltDOWN(){
-		beltVictor.set(-beltSpeed);
+		beltVictor.set(beltSpeed);
 	}
 	private void beltSTOP(){
 		beltVictor.set(0);

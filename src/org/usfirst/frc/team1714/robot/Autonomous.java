@@ -6,9 +6,9 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 
 public class Autonomous {
-	private Ultrasonic frontUSonic, rearUSonic;
-	private AnalogGyro gyro;
-	private Encoder leftEncoder,rightEncoder;
+	public Ultrasonic intakeUSonic, gearUSonic;
+	public AnalogGyro gyro;
+	public Encoder leftEncoder,rightEncoder;
 	
 	private enum sideGearSelection{
 		stage1, stage2, stage3, stage4, stage5
@@ -23,14 +23,14 @@ public class Autonomous {
 	
 	//Pin placeholder
 	private int
-		frontUSonicPin1 	= 6, //digital port 6
-		frontUSonicPin2 	= 7, //digital port 7
-		rearUSonicPin1 		= 8, //digital port 8
-		rearUSonicPin2 		= 9, //digital port 9 
-		leftEncoderPin1 	= 2, //digital port 2 
-		leftEncoderPin2 	= 3, //digital port 3
-		rightEncoderPin1 	= 0, //digital port 0
-		rightEncoderPin2 	= 1, //digital port 1
+		intakeUSonicPin1 	= 7, //digital port 6
+		intakeUSonicPin2 	= 6, //digital port 7
+		gearUSonicPin1 		= 9, //digital port 8
+		gearUSonicPin2 		= 8, //digital port 9 
+		rightEncoderPin1 	= 2, //digital port 2 
+		rightEncoderPin2 	= 3, //digital port 3
+		leftEncoderPin1 	= 0, //digital port 0
+		leftEncoderPin2 	= 1, //digital port 1
 		gyroPin 			= 0; //analog port 0
 	//Pin placeholder
 	
@@ -38,10 +38,10 @@ public class Autonomous {
 	
 	Autonomous(){
 		 gyro = new AnalogGyro(gyroPin);
-		 frontUSonic = new Ultrasonic(frontUSonicPin1, frontUSonicPin2);
-		 rearUSonic = new Ultrasonic(rearUSonicPin1, rearUSonicPin2);
-		 leftEncoder = new Encoder(leftEncoderPin1,leftEncoderPin2);
-		 rightEncoder = new Encoder(rightEncoderPin1, rightEncoderPin2);
+		 intakeUSonic = new Ultrasonic(intakeUSonicPin1, intakeUSonicPin2);
+		 gearUSonic = new Ultrasonic(gearUSonicPin1, gearUSonicPin2);
+		 leftEncoder = new Encoder(rightEncoderPin1,rightEncoderPin2);
+		 rightEncoder = new Encoder(leftEncoderPin1, leftEncoderPin2);
 		 
 	}
 	
@@ -53,7 +53,7 @@ public class Autonomous {
 	public void shooting(boolean color){
 		switch(currentShootingStage){
 			case 0:
-				if(rearUSonic.getRangeInches() > temp)
+				if(gearUSonic.getRangeInches() > temp)
 				{
 					Robot.rightStickY = -0.5;
 					Robot.leftStickY =  -0.5;
@@ -74,7 +74,7 @@ public class Autonomous {
 				}
 				break;
 			case 2:
-				if(rearUSonic.getRangeInches() > temp)
+				if(gearUSonic.getRangeInches() > temp)
 				{
 					Robot.rightStickY = -0.3;
 					Robot.leftStickY =  -0.3;
@@ -110,7 +110,7 @@ public class Autonomous {
 	public void middleGear(){
 		switch(middleStage){
 		default://drive forward till the robot reach the designated distance
-			if(frontUSonic.getRangeInches() >= temp){
+			if(intakeUSonic.getRangeInches() >= temp){
 				Robot.leftStickY = temp;
 				Robot.rightStickY = temp;
 			}
@@ -134,7 +134,7 @@ public class Autonomous {
 	public void sideGear(){
 		switch(sideStage){
 		default://go straight for a certain distance
-			if(rearUSonic.getRangeInches() <= temp){
+			if(gearUSonic.getRangeInches() <= temp){
 				Robot.leftStickY = temp;
 				Robot.rightStickY = temp;
 			}
@@ -180,7 +180,7 @@ public class Autonomous {
 			break;
 			
 		case stage4://go straight toward peg till robot is close
-			if(frontUSonic.getRangeInches() >= temp){
+			if(intakeUSonic.getRangeInches() >= temp){
 				Robot.leftStickY = temp;
 				Robot.rightStickY = temp;
 			}
