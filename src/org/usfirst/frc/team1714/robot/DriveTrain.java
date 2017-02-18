@@ -87,7 +87,7 @@ public class DriveTrain {
 			 drive.tankDrive(Robot.leftStickY, Robot.rightStickY);
 		 }
 		 else{
-			 if((leftStickY > 0 && rightStickY > 0) || (leftStickY < 0 && rightStickY < 0)){//if both joystick is either in positive or negative direction
+			 if(/*(leftStickY > 0 && rightStickY > 0) || */(leftStickY < 0 && rightStickY < 0)){//if both joystick is either in positive or negative direction
 				 if(leftStickY < rightStickY){
 					 drive.tankDrive(leftStickY, leftStickY);//if left joystick Y value is bigger, use left joystick Y value for both joystick
 				 }

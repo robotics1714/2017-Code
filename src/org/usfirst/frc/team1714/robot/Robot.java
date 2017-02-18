@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.cscore.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,7 +28,7 @@ public class Robot extends IterativeRobot {
 	Servo cameraServo;
 	UsbCamera camera;
 	
-	PowerDistributionPanel pdp;
+	static PowerDistributionPanel pdp;
 	
 	DriveTrain train;
 	Manipulator manipulator;
@@ -73,6 +74,8 @@ public class Robot extends IterativeRobot {
 		autoChooser.addObject(mgAuto, mgAuto);
 		autoChooser.addObject(lgAuto, lgAuto);
 		SmartDashboard.putData("Autonomous: ", autoChooser);
+		
+		pdp = new PowerDistributionPanel();
 		
 		cameraServo = new Servo(cameraServoPin);
 		
@@ -158,6 +161,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("button:", control.leftStick.getRawButton(10));
 		SmartDashboard.putBoolean("camerathing", lastCycle10);
 		SmartDashboard.putNumber("servovalue", cameraServo.get());
+		SmartDashboard.putNumber("leftyaxis:", leftStickY);
+
 		
 		// DEBUG CODE REMOVE LATER
 		if(control.leftStick.getRawButton(10) && !lastCycle10)

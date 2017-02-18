@@ -20,7 +20,7 @@ public class Manipulator {
 	//Pin placeholder
 	
 	private double
-		intakeSpeed = 0.05,
+		intakeSpeed = 0.10,
 		beltSpeed = 0.25,
 		shootInitialSpeed = 0.05,
 		shootSpeed,
@@ -52,7 +52,7 @@ public class Manipulator {
 				boolean intakeStop, 
 				boolean intakeReverse, 
 				boolean feedBeltReverse){
-		
+
 		recordEncoderRate();//in every period this should be run last to record the rate of shooting wheel in the end of each period
 		//resetSpeedEncoder();//in every period this should be run first to reset the encoder for shooting wheel
 		
@@ -77,11 +77,11 @@ public class Manipulator {
 			}
 			else{
 				if(!shootingStarted){
-					/*If the robot is not shooting, the intake running normally and feed belt run reverse.
-					*if the robot is shooting, the checking of shooting will let the intake run in normal direction
-					*and the beilt run in normal direction, so there is no need for method call when the button is 
-					*pressed while the robot is shooting.
-					*/
+					//If the robot is not shooting, the intake running normally and feed belt run reverse.
+					//if the robot is shooting, the checking of shooting will let the intake run in normal direction
+					//and the beilt run in normal direction, so there is no need for method call when the button is 
+					//pressed while the robot is shooting.
+					//
 					intakeIN();
 					beltDOWN();
 				}	
