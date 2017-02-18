@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1714.robot;
 
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 
@@ -52,6 +53,7 @@ public class Manipulator {
 				boolean intakeStop, 
 				boolean intakeReverse, 
 				boolean feedBeltReverse){
+		System.out.println("updating manip");
 
 		recordEncoderRate();//in every period this should be run last to record the rate of shooting wheel in the end of each period
 		//resetSpeedEncoder();//in every period this should be run first to reset the encoder for shooting wheel
@@ -70,6 +72,7 @@ public class Manipulator {
 		
 		//intake section
 		if(intakeOn && !intakeStop && !intakeReverse && !shootingStarted){
+			System.out.println("Case 0");
 			if(!intakeIsOn){
 				intakeIsOn = true;
 				intakeIsStop = false;
@@ -93,6 +96,7 @@ public class Manipulator {
 			*/
 		}
 		else if(intakeStop && !intakeOn && !intakeReverse && !shootingStarted){
+			System.out.println("Case 1");
 			if(!intakeIsStop){
 				intakeIsStop = true;
 				intakeIsOn = false;
@@ -100,6 +104,7 @@ public class Manipulator {
 			}
 		}
 		else if(intakeReverse && !intakeOn && !intakeStop && !shootingStarted){
+			System.out.println("Case 2");
 			if(!intakeIsReverse){
 				intakeIsReverse = true;
 				intakeIsOn = false;
@@ -107,6 +112,7 @@ public class Manipulator {
 			}
 		}
 		else if(!intakeReverse && !intakeOn && !intakeStop && !shootingStarted){
+			System.out.println("Case 3");
 			if(intakeIsOn){
 				intakeIN();
 				beltDOWN();
@@ -117,6 +123,10 @@ public class Manipulator {
 			else if(intakeIsStop){
 				intakeSTOP();
 			}
+		}
+		else
+		{
+			System.out.println("No Case");
 		}
 		
 		//feeding belt section
@@ -164,6 +174,7 @@ public class Manipulator {
 		intakeVictor.set(-intakeSpeed);
 	}
 	private void intakeSTOP(){
+		System.out.println("stopping BAD");
 		intakeVictor.set(0);
 	}
 	
