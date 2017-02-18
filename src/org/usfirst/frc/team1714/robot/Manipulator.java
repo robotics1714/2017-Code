@@ -69,7 +69,7 @@ public class Manipulator {
 		}
 		
 		//intake section
-		if(intakeOn && !intakeStop && !intakeReverse){
+		if(intakeOn && !intakeStop && !intakeReverse && !shootingStarted){
 			if(!intakeIsOn){
 				intakeIsOn = true;
 				intakeIsStop = false;
@@ -86,31 +86,36 @@ public class Manipulator {
 					beltDOWN();
 				}	
 			}
+			/*If the robot is not shooting, the intake running normally and feed belt run reverse.
+			*if the robot is shooting, the checking of shooting will let the intake run in normal direction
+			*and the belt run in normal direction, so there is no need for method call when the button is 
+			*pressed while the robot is shooting.
+			*/
 		}
-		else if(intakeStop && !intakeOn && !intakeReverse){
+		else if(intakeStop && !intakeOn && !intakeReverse && !shootingStarted){
 			if(!intakeIsStop){
 				intakeIsStop = true;
 				intakeIsOn = false;
 				intakeIsReverse = false;
 			}
-			else{
-				if(!shootingStarted){
-					//You can only manually stop the intake when the robot is not shooting.
-					intakeSTOP();
-				}
-			}
 		}
-		else if(intakeReverse && !intakeOn && !intakeStop){
+		else if(intakeReverse && !intakeOn && !intakeStop && !shootingStarted){
 			if(!intakeIsReverse){
 				intakeIsReverse = true;
 				intakeIsOn = false;
 				intakeIsStop = false;
 			}
-			else{
-				if(!shootingStarted){
-					//You can only manually run the intake reverse when the robot is not shooting.
-					intakeOUT();
-				}
+		}
+		else if(!intakeReverse && !intakeOn && !intakeStop && !shootingStarted){
+			if(intakeIsOn){
+				intakeIN();
+				beltDOWN();
+			}
+			else if(intakeIsReverse){
+				intakeOUT();
+			}
+			else if(intakeIsStop){
+				intakeSTOP();
 			}
 		}
 		

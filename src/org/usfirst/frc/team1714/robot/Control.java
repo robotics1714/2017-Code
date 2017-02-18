@@ -29,8 +29,6 @@ public class Control {
 		Robot.shiftLow = rightStick.getRawButton(2);
 		Robot.enablePTO = leftStick.getRawButton(3);
 		Robot.disablePTO = leftStick.getRawButton(2);
-		Robot.startCompressor = leftStick.getRawButton(9);
-		Robot.stopCompressor = leftStick.getRawButton(8);
 		
 		Robot.shoot = xboxStick.getAButton();
 		Robot.feedBeltReverse = xboxStick.getBackButton();

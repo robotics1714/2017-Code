@@ -23,9 +23,7 @@ public class DriveTrain {
 	 	PTOIsEnable,
 	 	PTOIsDisable,
 	 	gearShiftedLow,
-	 	gearShiftedHigh,
-	 	compressorIsOn,
-	 	compressorIsOff;
+	 	gearShiftedHigh;
 	 
 	 //Pin placeholder
 	 private int
@@ -78,8 +76,6 @@ public class DriveTrain {
 			 	boolean disablePTO, 
 			 	boolean shiftHigh, 
 			 	boolean shiftLow, 
-			 	boolean startCompressor, 
-			 	boolean stopCompressor,
 			 	double leftStickY,
 			 	double rightStickY){
 		 //driving section
@@ -88,11 +84,26 @@ public class DriveTrain {
 		 }
 		 else{
 			 if(/*(leftStickY > 0 && rightStickY > 0) || */(leftStickY < 0 && rightStickY < 0)){//if both joystick is either in positive or negative direction
-				 if(leftStickY < rightStickY){
-					 drive.tankDrive(leftStickY, leftStickY);//if left joystick Y value is bigger, use left joystick Y value for both joystick
+
+			 /*	When PTO is enabled, we want both side of the drive train to run in the same speed because we we do not we will break the transmission
+			  * we agree that we will take the joystick that has the smaller value to drive when PTO is enable so that we won't run PTO in high speed easily 
+			  */
+				 if(leftStickY > 0 && rightStickY > 0){//if both joysticks are in positive direction
+	
+					 if(leftStickY < rightStickY){
+						 drive.tankDrive(leftStickY, leftStickY);//if left joystick Y value is smaller, use left joystick Y value for both joystick
+					 }
+					 else if(leftStickY > rightStickY){
+						 drive.tankDrive(rightStickY, rightStickY);//if right joystick Y value is smaller, use right joystick Y value for both joystick
+					 }
 				 }
-				 else if(leftStickY > rightStickY){
-					 drive.tankDrive(rightStickY, rightStickY);//if right joystick Y value is bigger, use right joystick Y value for both joystick
+				 else if(leftStickY < 0 && rightStickY < 0){//if both joysticks are in negative direction
+					 if(leftStickY > rightStickY){
+						 drive.tankDrive(leftStickY, leftStickY);//if left joystick Y value is bigger, use left joystick Y value for both joystick
+					 }
+					 else if(leftStickY < rightStickY){
+						 drive.tankDrive(rightStickY, rightStickY);//if right joystick Y value is bigger, use right joystick Y value for both joystick
+					 }
 				 }
 			 }
 		 }
@@ -119,44 +130,28 @@ public class DriveTrain {
 		 
 		 //shifting section
 		 if (shiftLow && !shiftHigh) {
-			 	if(!gearShiftedLow){
-			 		gearShiftedLow = true;
-			 		gearShiftedHigh = false;
-			 	}
-			 	else{
-			 		shiftGearLow();
-			 	}
+		 	if(!gearShiftedLow){
+		 		gearShiftedLow = true;
+		 		gearShiftedHigh = false;
+		 	}
+		 	else{
+		 		shiftGearLow();
+		 	}
 			 
-	    	}
-	    	else if (shiftHigh && !shiftLow) {
-	    		if(!gearShiftedHigh){
-	    			gearShiftedHigh = true;
-	    			gearShiftedLow = false;
-	    		}
-	    		else{
-	    			shiftGearHigh();
-	    		}
-	    	}
+    	}
+    	else if (shiftHigh && !shiftLow) {
+    		if(!gearShiftedHigh){
+    			gearShiftedHigh = true;
+    			gearShiftedLow = false;
+    		}
+    		else{
+    			shiftGearHigh();
+    		}
+    	}
 	    	
 		 //compressor section
-	    	if(stopCompressor && !startCompressor) {
-	    		if(!compressorIsOff){
-	    			compressorIsOff = true;
-	    			compressorIsOn = false;
-	    		}
-	    		else{
-	    			turnCompressorOff();
-	    		}
-	    	}
-	    	else if(startCompressor && !stopCompressor) {
-	    		if(!compressorIsOn){
-	    			compressorIsOn = true;
-	    			compressorIsOff = false;
-	    		}
-	    		else{
-	    			turnCompressorOn();
-	    		}
-	    	}
+		 comp.start();//we power on the compressor when it is plug in and it will automatically running till it hit the pressure gap, so we don't need manual control of compressor
+		 
 	 }
 	 //Power Take Off section
 	 private void PTOenable(){
@@ -186,16 +181,6 @@ public class DriveTrain {
 	  }
 	  public boolean IsInHighGear(){
 		  return gearShiftedHigh;
-	  }
-	  
-	  
-	  //Compressor section    
-	  private void turnCompressorOn() {
-	    	comp.start();
-	  }	    
-	  private void turnCompressorOff() {
-	    	comp.stop();
-	  }
-			 
+	  }	 
 	 	
 }

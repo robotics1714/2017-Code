@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1714.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.cscore.*;
@@ -37,8 +38,6 @@ public class Robot extends IterativeRobot {
 	
 	//Below are the variable that represent driver control input
 	public static boolean 
-		startCompressor,
-		stopCompressor,
 		shiftHigh,
 		shiftLow,
 		shoot,
@@ -91,6 +90,8 @@ public class Robot extends IterativeRobot {
 		manipulator = new Manipulator();
 		control = new Control();
 		auto = new Autonomous();
+		
+		pdp.clearStickyFaults();
 	}
 
 	/**
@@ -133,7 +134,7 @@ public class Robot extends IterativeRobot {
 			auto.sideGear();
 			break;
 		}
-		train.update(enablePTO, disablePTO, shiftHigh, shiftLow, startCompressor, stopCompressor, leftStickY, rightStickY);
+		train.update(enablePTO, disablePTO, shiftHigh, shiftLow, leftStickY, rightStickY);
 		manipulator.update(shoot, intakeOn, intakeStop, intakeReverse, feedBeltReverse);
 	}
 
@@ -178,7 +179,7 @@ public class Robot extends IterativeRobot {
 		
 		
 		control.update();
-		train.update(enablePTO, disablePTO, shiftHigh, shiftLow, startCompressor, stopCompressor,leftStickY, rightStickY);
+		train.update(enablePTO, disablePTO, shiftHigh, shiftLow,leftStickY, rightStickY);
 		manipulator.update(shoot, intakeOn, intakeStop, intakeReverse, feedBeltReverse);
 	}
 
