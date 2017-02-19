@@ -171,11 +171,11 @@ public class Autonomous {
 					
 					if(r.y < r2.y) {
 						yFinal = r.y;
-						hFinal = ((r2.y + r2.height) - r.y);
+						hFinal = ((r.y + r.height) - r2.y);
 					}
 					else {
 						yFinal = r2.y;
-						hFinal = ((r.y + r.height) - r2.y);
+						hFinal = ((r2.y + r2.height) - r.y);
 					}
 					if(r.x < r2.x) {
 						xFinal = r.x;
@@ -187,6 +187,7 @@ public class Autonomous {
 					}
 					
 					rFinal = new Rect(xFinal, yFinal, wFinal, hFinal);
+					
 					/*
 					if(r.x < r2.x){
 						leftX = r.x;
@@ -210,6 +211,7 @@ public class Autonomous {
 					}
 					rFinal = new Rect(leftX, leftY, ((rightX + rightW) - leftX), (rightY + rightH) - leftY);
 					*/
+					
 					centerX = rFinal.x + (rFinal.width/2);
 					Imgproc.rectangle(pic, new Point(rFinal.x, rFinal.y), new Point((rFinal.x + rFinal.width), (rFinal.y + rFinal.height)),
 							new Scalar(255, 255, 255), 2);

@@ -21,7 +21,7 @@ public class Manipulator {
 	
 	private double
 		intakeSpeed = 0.75,
-		beltSpeed = 0.5,
+		beltSpeed = 0.43,
 		shootInitialSpeed = 0.05,
 		shootSpeed,
 		shootSpeedIncrement 	= 0.025, 
