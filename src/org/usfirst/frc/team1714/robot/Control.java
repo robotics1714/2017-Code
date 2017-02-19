@@ -6,6 +6,8 @@ import edu.wpi.first.wpilibj.XboxController;
 public class Control {
 	Joystick leftStick, rightStick;
 	XboxController xboxStick;
+	boolean lastInvert;
+	boolean inverted = false;
 	
 	//Pin placeholder
 	private int
@@ -25,6 +27,12 @@ public class Control {
 	}
 	
 	public void update(){//assign the value of the variable based on the input of the driver station
+		if(leftStick.getRawButton(6) && !lastInvert)
+		{
+			inverted = !inverted;
+		}
+		lastInvert = leftStick.getRawButton(6);
+		
 		Robot.shiftHigh = rightStick.getRawButton(3);
 		Robot.shiftLow = rightStick.getRawButton(2);
 		Robot.enablePTO = leftStick.getRawButton(3);
@@ -36,8 +44,14 @@ public class Control {
 		Robot.intakeReverse = xboxStick.getStartButton();
 		Robot.intakeStop = xboxStick.getBButton();
 		
+		if(!inverted) {
 		Robot.leftStickY = - leftStick.getAxis(Joystick.AxisType.kY);
 		Robot.rightStickY = - rightStick.getAxis(Joystick.AxisType.kY);
+		}
+		else {
+			Robot.leftStickY =  rightStick.getAxis(Joystick.AxisType.kY);
+			Robot.rightStickY =  leftStick.getAxis(Joystick.AxisType.kY);
+		}
 	}
 	  	
 }

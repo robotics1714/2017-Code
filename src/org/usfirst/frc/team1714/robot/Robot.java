@@ -26,7 +26,7 @@ public class Robot extends IterativeRobot {
 	SendableChooser<String> autoChooser;
 	
 	Servo cameraServo;
-	UsbCamera camera;
+	public UsbCamera camera;
 	
 	static PowerDistributionPanel pdp;
 	
@@ -56,6 +56,7 @@ public class Robot extends IterativeRobot {
 	private int
 		cameraServoPin = 6; //PWM port 6
 		
+	//CvSource outstream;
 		
 	
 
@@ -85,11 +86,16 @@ public class Robot extends IterativeRobot {
 		camera.setWhiteBalanceManual(4500);
 		camera.setWhiteBalanceHoldCurrent();
 		
+		//outstream = CameraServer.getInstance().putVideo("AAAAA", 320, 240);
+		
 		train = new DriveTrain();
 		manipulator = new Manipulator();
 		control = new Control();
-		auto = new Autonomous();
+		auto = new Autonomous(camera);
 		
+		auto.intakeUSonic.setAutomaticMode(true);
+		auto.gearUSonic.setAutomaticMode(true);
+		 
 		pdp.clearStickyFaults();
 	}
 
@@ -106,7 +112,9 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		autoSelected = autoChooser.getSelected();
 		System.out.println("Auto selected: " + autoSelected);
+		shiftLow = true;
 	}
 
 	/**
@@ -133,6 +141,7 @@ public class Robot extends IterativeRobot {
 			auto.sideGear();
 			break;
 		}
+		
 		train.update(enablePTO, disablePTO, shiftHigh, shiftLow, leftStickY, rightStickY);
 		manipulator.update(shoot, intakeOn, intakeStop, intakeReverse, feedBeltReverse);
 	}
@@ -140,10 +149,6 @@ public class Robot extends IterativeRobot {
 	/**
 	 * This function is called periodically during operator control
 	 */
-	
-	//DEBUG VARS REMOVE LATER
-	boolean lastCycle10 = false;
-	boolean lastCycle11 = false;
 	
 	@Override
 	public void teleopPeriodic() {		
@@ -158,24 +163,6 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Left drive train encoder value", auto.leftEncoder.get());
 		SmartDashboard.putNumber("Right drive train encoder value", auto.rightEncoder.get());
 		SmartDashboard.putNumber("Servo value", cameraServo.get());
-		SmartDashboard.putBoolean("button:", control.leftStick.getRawButton(10));
-		SmartDashboard.putBoolean("camerathing", lastCycle10);
-		SmartDashboard.putNumber("servovalue", cameraServo.get());
-		SmartDashboard.putNumber("leftyaxis:", leftStickY);
-
-		
-		// DEBUG CODE REMOVE LATER
-		if(control.leftStick.getRawButton(10) && !lastCycle10)
-		{
-			cameraServo.set((cameraServo.get()+0.05));
-		}
-		lastCycle10 = control.leftStick.getRawButton(10);
-		if(control.leftStick.getRawButton(11) && !lastCycle11)
-		{
-			cameraServo.set((cameraServo.get()+0.05));
-		}
-		lastCycle11 = control.leftStick.getRawButton(11);
-		
 		
 		control.update();
 		train.update(enablePTO, disablePTO, shiftHigh, shiftLow,leftStickY, rightStickY);
@@ -187,6 +174,26 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+	}
+	@Override
+	public void robotPeriodic()
+	{
+		
+	}
+	@Override
+	public void disabledInit()
+	{
+		
+	}
+	@Override
+	public void disabledPeriodic()
+	{
+		
+	}
+	@Override
+	public void teleopInit()
+	{
+		
 	}
 }
 

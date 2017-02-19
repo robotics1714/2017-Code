@@ -4,6 +4,7 @@ import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 
@@ -44,8 +45,6 @@ public class DriveTrain {
 	    tLeftFront = new CANTalon(tLeftFrontPin);
 	    tLeftRear = new CANTalon(tLeftRearPin);
 	    
-	   
-	    
 	    shiftsolenoid = new DoubleSolenoid(pcmID, shiftsolenoidPin1, shiftsolenoidPin2);
 	    shiftsolenoid.set(DoubleSolenoid.Value.kForward);
 	    PTOsolenoid = new DoubleSolenoid(pcmID, PTOsolenoidPin1, PTOsolenoidPin2);
@@ -54,8 +53,7 @@ public class DriveTrain {
     	comp.setClosedLoopControl(true);
     	dStation = DriverStation.getInstance();
     	drive = new RobotDrive(tLeftFront, tLeftRear, tRightFront, tRightRear);
-    	
-    	
+    	drive.setSafetyEnabled(false);
 	 }
 	 
 	 int placeholder;
@@ -80,7 +78,12 @@ public class DriveTrain {
 			 	double rightStickY){
 		 //driving section
 		 if(!PTOenabled){
-			 drive.tankDrive(Robot.leftStickY, Robot.rightStickY);
+			 drive.tankDrive(leftStickY, rightStickY);
+			 System.out.println("drivin");
+			 SmartDashboard.putNumber("right motor", tRightFront.get());
+			 SmartDashboard.putNumber("left motor", tLeftFront.get());
+			 SmartDashboard.putNumber("right stick", rightStickY);
+			 SmartDashboard.putNumber("left stick", leftStickY);
 		 }
 		 else{
 			 if(/*(leftStickY > 0 && rightStickY > 0) || */(leftStickY < 0 && rightStickY < 0)){//if both joystick is either in positive or negative direction
