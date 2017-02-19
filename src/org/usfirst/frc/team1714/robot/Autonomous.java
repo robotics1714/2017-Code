@@ -160,13 +160,34 @@ public class Autonomous {
 			//use camera tracking to line up the peg, reserved for Cool Guy
 			if(!pipe.filterContoursOutput().isEmpty())
 			{
-				int leftX, leftY, leftW, leftH;
-				int rightX, rightY, rightW, rightH;
+				//int leftX, leftY, leftW, leftH;
+				//int rightX, rightY, rightW, rightH;
+				int xFinal, yFinal, wFinal, hFinal;
 				Rect rFinal;
 				System.out.println("pipin");
 				Rect r = Imgproc.boundingRect(pipe.filterContoursOutput().get(0));
 				if(pipe.filterContoursOutput().size() > 1) {
 					Rect r2 = Imgproc.boundingRect(pipe.filterContoursOutput().get(1));
+					
+					if(r.y < r2.y) {
+						yFinal = r.y;
+						hFinal = ((r2.y + r2.height) - r.y);
+					}
+					else {
+						yFinal = r2.y;
+						hFinal = ((r.y + r.height) - r2.y);
+					}
+					if(r.x < r2.x) {
+						xFinal = r.x;
+						wFinal = ((r2.x + r2.width) - r.x);
+					}
+					else {
+						xFinal = r2.x;
+						wFinal = ((r.x + r.width) - r2.x);
+					}
+					
+					rFinal = new Rect(xFinal, yFinal, wFinal, hFinal);
+					/*
 					if(r.x < r2.x){
 						leftX = r.x;
 						leftY = r.y;
@@ -188,15 +209,18 @@ public class Autonomous {
 						rightH = r.height;
 					}
 					rFinal = new Rect(leftX, leftY, ((rightX + rightW) - leftX), (rightY + rightH) - leftY);
-					centerX = rFinal.x + (r.width/2);
+					*/
+					centerX = rFinal.x + (rFinal.width/2);
+					Imgproc.rectangle(pic, new Point(rFinal.x, rFinal.y), new Point((rFinal.x + rFinal.width), (rFinal.y + rFinal.height)),
+							new Scalar(255, 255, 255), 2);
 				}
 				else
 				{
 					centerX = r.x + (r.width / 2);
+					Imgproc.rectangle(pic, new Point(r.x, r.y), new Point((r.x + r.width), (r.y + r.height)),
+							new Scalar(255, 255, 255), 5);
 				}
 				
-				Imgproc.rectangle(pic, new Point(r.x, r.y), new Point((r.x + r.width), (r.y + r.height)),
-						new Scalar(255, 255, 255), 5);
 				// Give the output stream a new image to display
 				rectOut.putFrame(pic);
 				
