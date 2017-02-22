@@ -74,6 +74,7 @@ public class DriveTrain {
 			 	boolean disablePTO, 
 			 	boolean shiftHigh, 
 			 	boolean shiftLow, 
+			 	boolean autoGear,
 			 	double leftStickY,
 			 	double rightStickY){
 		 //driving section
@@ -85,7 +86,7 @@ public class DriveTrain {
 			 SmartDashboard.putNumber("right stick", rightStickY);
 			 SmartDashboard.putNumber("left stick", leftStickY);
 		 }
-		 else{
+		 else {
 			 if(/*(leftStickY > 0 && rightStickY > 0) || */(leftStickY < 0 && rightStickY < 0)){//if both joystick is either in positive or negative direction
 
 			 /*	When PTO is enabled, we want both side of the drive train to run in the same speed because we we do not we will break the transmission

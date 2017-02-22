@@ -35,6 +35,10 @@ public class Robot extends IterativeRobot {
 	Control control;
 	Autonomous auto;
 	
+	//DEBUG VARS REMOVE LATER
+	boolean lastCycle10 = false;
+	boolean lastCycle11 = false;
+	
 	//Below are the variable that represent driver control input
 	public static boolean 
 		shiftHigh,
@@ -45,7 +49,8 @@ public class Robot extends IterativeRobot {
 		intakeOn,
 		intakeStop,
 		intakeReverse,
-		feedBeltReverse;
+		feedBeltReverse,
+		autoGear;
 	public static double
 		leftStickY,
 		rightStickY;
@@ -95,7 +100,8 @@ public class Robot extends IterativeRobot {
 		
 		auto.intakeUSonic.setAutomaticMode(true);
 		auto.gearUSonic.setAutomaticMode(true);
-		 
+		
+		//0-
 		pdp.clearStickyFaults();
 	}
 
@@ -142,13 +148,14 @@ public class Robot extends IterativeRobot {
 			break;
 		}
 		
-		train.update(enablePTO, disablePTO, shiftHigh, shiftLow, leftStickY, rightStickY);
+		train.update(enablePTO, disablePTO, shiftHigh, shiftLow, autoGear, leftStickY, rightStickY);
 		manipulator.update(shoot, intakeOn, intakeStop, intakeReverse, feedBeltReverse);
 	}
 
 	/**
 	 * This function is called periodically during operator control
 	 */
+	boolean autoGearLast = false;
 	
 	@Override
 	public void teleopPeriodic() {		
@@ -163,10 +170,41 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Left drive train encoder value", auto.leftEncoder.get());
 		SmartDashboard.putNumber("Right drive train encoder value", auto.rightEncoder.get());
 		SmartDashboard.putNumber("Servo value", cameraServo.get());
+		SmartDashboard.putNumber("Shooting wheel speed:", manipulator.speedEncoder.getRate());
+		SmartDashboard.putString("uhhhh idk", auto.middleStage.toString());
+		
+		if(!autoGear) {
+			auto.sink.grabFrame(auto.pic);
+			auto.rectOut.putFrame(auto.pic);
+			camera.setExposureManual(40);
+		}
 		
 		control.update();
-		train.update(enablePTO, disablePTO, shiftHigh, shiftLow,leftStickY, rightStickY);
+		train.update(enablePTO, disablePTO, shiftHigh, shiftLow, autoGear, leftStickY, rightStickY);
 		manipulator.update(shoot, intakeOn, intakeStop, intakeReverse, feedBeltReverse);
+		
+		 if(autoGear) {
+			auto.middleGear(); 
+			if(!autoGearLast) {
+				auto.middleStage = auto.middleStage.stage1;
+			}
+		 }
+		
+		 autoGearLast = autoGear;
+		// DEBUG CODE REMOVE LATER
+		/*
+				if(control.leftStick.getRawButton(10) && !lastCycle10)
+				{
+					cameraServo.set((cameraServo.get()-0.01));
+				}
+				lastCycle10 = control.leftStick.getRawButton(10);
+				if(control.leftStick.getRawButton(11) && !lastCycle11)
+				{
+					cameraServo.set((cameraServo.get()+0.01));
+				}
+				lastCycle11 = control.leftStick.getRawButton(11);
+				*/
+				cameraServo.set(0);
 	}
 
 	/**
@@ -193,7 +231,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit()
 	{
-		
+		camera.setExposureManual(40);
 	}
 }
 

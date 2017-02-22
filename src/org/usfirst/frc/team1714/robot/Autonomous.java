@@ -2,6 +2,7 @@ package org.usfirst.frc.team1714.robot;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.cscore.*;
@@ -14,20 +15,21 @@ public class Autonomous {
 	public Ultrasonic intakeUSonic, gearUSonic;
 	public AnalogGyro gyro;
 	public Encoder leftEncoder,rightEncoder;
-	Mat pic;
-	CvSink sink;
-	CvSource rectOut;
-	GripPipelineTape pipe;
+	UsbCamera camwham;
+	public Mat pic;
+	public CvSink sink;
+	public CvSource rectOut;
+	public GripPipelineTape pipe;
 	
 	private enum sideGearSelection{
 		stage1, stage2, stage3, stage4, stage5
 	}
 	private sideGearSelection sideStage;
 	
-	private enum middleGearSelection{
-		stage1, stage2, stage3, stage4
+	public enum middleGearSelection{
+		stage1, stage2, stage3, stage4, nostage
 	}
-	private middleGearSelection middleStage;
+	public middleGearSelection middleStage;
 	
 	
 	//Pin placeholder
@@ -56,6 +58,7 @@ public class Autonomous {
 		 pipe = new GripPipelineTape();
 		 middleStage = middleGearSelection.stage1;
 		 rectOut = CameraServer.getInstance().putVideo("Rectangle", 320, 240);
+		 camwham = cam;
 	}
 	
 	int currentShootingStage = 0;
@@ -141,8 +144,12 @@ public class Autonomous {
 	
 	int centerX;
 	public void middleGear(){
+		Robot.shiftLow = true;
+		Robot.shiftHigh = false;
+		SmartDashboard.putString("uhhhhhhh idk dude", middleStage.toString());
 		sink.grabFrame(pic);
 		pipe.process(pic);
+		camwham.setExposureManual(5);
 		
 		switch(middleStage){
 		default:
@@ -260,16 +267,19 @@ public class Autonomous {
 			//Robot.rightStickY = temp + temp;
 			if(gearUSonic.getRangeInches() > 6)
 			{
-				Robot.leftStickY = -0.55;
-				Robot.rightStickY = -0.55;
+				// OLD VALUE : -0.55
+				Robot.leftStickY = -0.70;
+				Robot.rightStickY = -0.70;
 			}
 			else
 			{
 				Robot.leftStickY = 0;
 				Robot.rightStickY = 0;
+				middleStage = middleGearSelection.stage4;
 			}
 			break;
-		
+		case stage4:
+			
 		}
 	}
 	

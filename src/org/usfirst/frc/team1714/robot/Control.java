@@ -27,14 +27,17 @@ public class Control {
 	}
 	
 	public void update(){//assign the value of the variable based on the input of the driver station
-		if(leftStick.getRawButton(6) && !lastInvert)
+		if(leftStick.getRawButton(4) && !lastInvert)
 		{
 			inverted = !inverted;
 		}
-		lastInvert = leftStick.getRawButton(6);
+		lastInvert = leftStick.getRawButton(4);
 		
-		Robot.shiftHigh = rightStick.getRawButton(3);
-		Robot.shiftLow = rightStick.getRawButton(2);
+		if(!leftStick.getRawButton(1)) {
+			Robot.shiftHigh = rightStick.getRawButton(3);
+			Robot.shiftLow = rightStick.getRawButton(2);
+		}
+		
 		Robot.enablePTO = leftStick.getRawButton(3);
 		Robot.disablePTO = leftStick.getRawButton(2);
 		
@@ -43,14 +46,19 @@ public class Control {
 		Robot.intakeOn = xboxStick.getYButton();
 		Robot.intakeReverse = xboxStick.getStartButton();
 		Robot.intakeStop = xboxStick.getBButton();
+		Robot.autoGear = leftStick.getRawButton(1);
 		
-		if(!inverted) {
-		Robot.leftStickY = - leftStick.getAxis(Joystick.AxisType.kY);
-		Robot.rightStickY = - rightStick.getAxis(Joystick.AxisType.kY);
-		}
-		else {
-			Robot.leftStickY =  rightStick.getAxis(Joystick.AxisType.kY);
-			Robot.rightStickY =  leftStick.getAxis(Joystick.AxisType.kY);
+		
+		if(!leftStick.getRawButton(1))
+		{
+			if(!inverted) {
+			Robot.leftStickY = - leftStick.getAxis(Joystick.AxisType.kY);
+			Robot.rightStickY = - rightStick.getAxis(Joystick.AxisType.kY);
+			}
+			else {
+				Robot.leftStickY =  rightStick.getAxis(Joystick.AxisType.kY);
+				Robot.rightStickY =  leftStick.getAxis(Joystick.AxisType.kY);
+			}
 		}
 	}
 	  	

@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1714.robot;
 
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 
@@ -21,12 +22,12 @@ public class Manipulator {
 	
 	private double
 		intakeSpeed = 0.75,
-		beltSpeed = 0.43,
-		shootInitialSpeed = 0.05,
+		beltSpeed = 0.6,
+		shootInitialSpeed = 0.82,
 		shootSpeed,
-		shootSpeedIncrement 	= 0.025, 
-		shootSpeedBuffer 		= 0.05,
-		expectedEncoderRate = 45000,// RIVEST CHANGED FROM 45000the ideal speed of the shooting wheel in terms of the encoder rate
+		shootSpeedIncrement 	= 0.0025, 
+		shootSpeedBuffer 		= 0.02,
+		expectedEncoderRate = 138500,// RIVEST CHANGED FROM 45000the ideal speed of the shooting wheel in terms of the encoder rate
 	 	encoderRate;
 	private int state = 0;
 	// STATES:
@@ -52,7 +53,8 @@ public class Manipulator {
 				boolean intakeStop, 
 				boolean intakeReverse, 
 				boolean feedBeltReverse){
-
+	
+		SmartDashboard.putNumber("Shooting wheel power:", shootVictor.get());
 		recordEncoderRate();//in every period this should be run last to record the rate of shooting wheel in the end of each period
 		//resetSpeedEncoder();//in every period this should be run first to reset the encoder for shooting wheel
 		
@@ -88,8 +90,11 @@ public class Manipulator {
 			case 1:
 			{
 				shootingSTART();
-				intakeIN();
-				beltUP();
+				if(speedEncoder.getRate() > 132000)
+				{
+					beltUP();
+					intakeIN();
+				}
 				break;
 			}
 			case 2:
@@ -125,8 +130,14 @@ public class Manipulator {
 			shootSpeed = (shootVictor.get() - shootSpeedIncrement);
 			//if the speed is faster than the speed we want, decrease the speed till the speed is within buffer zone
 		}
-		shootVictor.set(.95); //RIVEST HARDCODE MOTOR SPEED
+		if(shootVictor.get() < 0.8)
+		{
+			shootVictor.set(shootInitialSpeed);
+		}
+		else{
+		shootVictor.set(shootSpeed); //RIVEST HARDCODE MOTOR SPEED
 		//shootVictor.set(shootSpeed); RIVEST REMOVED TO HARDCODE MOTOR SPEED
+		}
 	}
 	private void shootingSTOP(){
 		shootVictor.set(0);
