@@ -27,7 +27,7 @@ public class Manipulator {
 		shootSpeed,
 		shootSpeedIncrement 	= 0.0025, 
 		shootSpeedBuffer 		= 0.02,
-		expectedEncoderRate = 138500,// RIVEST CHANGED FROM 45000the ideal speed of the shooting wheel in terms of the encoder rate
+		expectedEncoderRate = 144000,//changing from 138500 to 144000 on 2017-02-21 Karl ||  old: RIVEST CHANGED FROM 45000the ideal speed of the shooting wheel in terms of the encoder rate
 	 	encoderRate;
 	private int state = 0;
 	// STATES:
