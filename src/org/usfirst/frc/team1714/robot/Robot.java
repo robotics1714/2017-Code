@@ -21,6 +21,7 @@ public class Robot extends IterativeRobot {
 	final String lgAuto = "Left Gear";
 	final String mgAuto = "Middle Gear";
 	final String rgAuto = "Right Gear";
+	final String nAuto = "Do Absolutely Nothing";
 	
 	String autoSelected;
 	SendableChooser<String> autoChooser;
@@ -50,7 +51,9 @@ public class Robot extends IterativeRobot {
 		intakeStop,
 		intakeReverse,
 		feedBeltReverse,
-		autoGear;
+		autoGear,
+		spinUp,
+		spinOff;
 	public static double
 		leftStickY,
 		rightStickY;
@@ -77,6 +80,7 @@ public class Robot extends IterativeRobot {
 		autoChooser.addObject(rgAuto, rgAuto);
 		autoChooser.addObject(mgAuto, mgAuto);
 		autoChooser.addObject(lgAuto, lgAuto);
+		autoChooser.addObject(nAuto, nAuto);
 		SmartDashboard.putData("Autonomous: ", autoChooser);
 		
 		pdp = new PowerDistributionPanel();
@@ -98,6 +102,7 @@ public class Robot extends IterativeRobot {
 		control = new Control();
 		auto = new Autonomous(camera);
 		
+		auto.gyro.calibrate();
 		auto.intakeUSonic.setAutomaticMode(true);
 		auto.gearUSonic.setAutomaticMode(true);
 		
@@ -129,11 +134,14 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		switch (autoSelected) {
+		default:
+		case nAuto:
+			break;
 		case bsAuto:
-			auto.shooting(false);
+			//auto.shooting(false);
 			break;
 		case rsAuto:
-			auto.shooting(true);
+			//auto.shooting(true);
 			break;
 		case lgAuto:
 			doRightGear = false;
@@ -149,7 +157,7 @@ public class Robot extends IterativeRobot {
 		}
 		
 		train.update(enablePTO, disablePTO, shiftHigh, shiftLow, autoGear, leftStickY, rightStickY);
-		manipulator.update(shoot, intakeOn, intakeStop, intakeReverse, feedBeltReverse);
+		manipulator.update(shoot, intakeOn, intakeStop, intakeReverse, feedBeltReverse, spinUp, spinOff);
 	}
 
 	/**
@@ -181,7 +189,7 @@ public class Robot extends IterativeRobot {
 		
 		control.update();
 		train.update(enablePTO, disablePTO, shiftHigh, shiftLow, autoGear, leftStickY, rightStickY);
-		manipulator.update(shoot, intakeOn, intakeStop, intakeReverse, feedBeltReverse);
+		manipulator.update(shoot, intakeOn, intakeStop, intakeReverse, feedBeltReverse, spinUp, spinOff);
 		
 		 if(autoGear) {
 			auto.middleGear(); 

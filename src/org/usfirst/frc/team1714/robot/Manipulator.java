@@ -30,6 +30,7 @@ public class Manipulator {
 		expectedEncoderRate = 144000,//changing from 138500 to 144000 on 2017-02-21 Karl ||  old: RIVEST CHANGED FROM 45000the ideal speed of the shooting wheel in terms of the encoder rate
 	 	encoderRate;
 	private int state = 0;
+	private boolean spinningUp = false;
 	// STATES:
 	// 0 = NOTHING
 	// 1 = SHOOTING
@@ -52,7 +53,9 @@ public class Manipulator {
 				boolean intakeOn, 
 				boolean intakeStop, 
 				boolean intakeReverse, 
-				boolean feedBeltReverse){
+				boolean feedBeltReverse,
+				boolean spinUp,
+				boolean spinOff				){
 	
 		SmartDashboard.putNumber("Shooting wheel power:", shootVictor.get());
 		recordEncoderRate();//in every period this should be run last to record the rate of shooting wheel in the end of each period
@@ -79,6 +82,13 @@ public class Manipulator {
 			}
 		}
 		
+		if(spinOff){
+			spinningUp = false;
+		}
+		else if(spinUp){
+			spinningUp = true;
+		}
+
 		switch(state){
 			case 0:
 			{
@@ -89,7 +99,7 @@ public class Manipulator {
 			}
 			case 1:
 			{
-				shootingSTART();
+				spinningUp = true;
 				if(speedEncoder.getRate() > 132000)
 				{
 					beltUP();
@@ -116,7 +126,15 @@ public class Manipulator {
 				shootingSTOP();
 				intakeSTOP();
 				beltDOWN();
+				break;
 			}
+		}
+		
+		if(spinningUp) {
+			shootingSTART();
+		}
+		else {
+			shootingSTOP();
 		}
 	}
 	

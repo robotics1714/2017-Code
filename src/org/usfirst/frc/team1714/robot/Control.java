@@ -2,6 +2,7 @@ package org.usfirst.frc.team1714.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 public class Control {
 	Joystick leftStick, rightStick;
@@ -47,7 +48,8 @@ public class Control {
 		Robot.intakeReverse = xboxStick.getStartButton();
 		Robot.intakeStop = xboxStick.getBButton();
 		Robot.autoGear = leftStick.getRawButton(1);
-		
+		Robot.spinUp = xboxStick.getBumper(Hand.kRight);
+		Robot.spinOff = xboxStick.getBumper(Hand.kLeft);
 		
 		if(!leftStick.getRawButton(1))
 		{
