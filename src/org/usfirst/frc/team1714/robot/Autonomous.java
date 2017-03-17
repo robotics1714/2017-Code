@@ -236,19 +236,19 @@ public class Autonomous {
 				
 				if(centerX > 195){
 					System.out.println("right");
-					Robot.leftStickY = -0.75;
-					Robot.rightStickY = -0.85;
+					Robot.leftStickY = -0.65;
+					Robot.rightStickY = -0.75;
 				}
 				else if(centerX < 185){
 					System.out.println("left");
-					Robot.leftStickY = -0.85;
-					Robot.rightStickY = -0.75;
+					Robot.leftStickY = -0.75;
+					Robot.rightStickY = -0.65;
 				}
 				else
 				{
 					System.out.println("straight ahead");
-					Robot.leftStickY = -0.75;
-					Robot.rightStickY = -0.75;
+					Robot.leftStickY = -0.65;
+					Robot.rightStickY = -0.65;
 				}
 			}
 			else
@@ -257,7 +257,7 @@ public class Autonomous {
 				Robot.leftStickY = 0;
 				Robot.rightStickY = 0;
 			}
-			if(gearUSonic.getRangeInches() < 35)
+			if(gearUSonic.getRangeInches() < 24) //IMPVAL
 			{
 				middleStage = middleGearSelection.stage3;
 			}
@@ -269,8 +269,8 @@ public class Autonomous {
 			if(gearUSonic.getRangeInches() > 6)
 			{
 				// OLD VALUE : -0.55
-				Robot.leftStickY = -0.70;
-				Robot.rightStickY = -0.70;
+				Robot.leftStickY = -0.60;
+				Robot.rightStickY = -0.60;
 			}
 			else
 			{
@@ -285,6 +285,7 @@ public class Autonomous {
 	}
 	
 	boolean gyroCalibrated = false;
+	boolean seeNothing = true;
 	
 	public void sideGear(){
 		Robot.shiftLow = true;
@@ -296,6 +297,7 @@ public class Autonomous {
 		switch(sideStage){
 		case stage1:
 		default://go straight for a certain distance
+			/*
 			if(!timerStarted) {
 				startingTime = Timer.getFPGATimestamp();
 				timerStarted = true;
@@ -303,10 +305,12 @@ public class Autonomous {
 			if((Timer.getFPGATimestamp() - startingTime) < 2) {
 				if(!gyroCalibrated) {
 					gyro.calibrate();
+					gyro.setSensitivity(0.001675);
 					gyroCalibrated = true;
 				}
 			}
-			if((Timer.getFPGATimestamp() - startingTime) < 4.5) {
+			*/
+			if((Timer.getFPGATimestamp() - startingTime) < 3) {
 				Robot.leftStickY = 0.65;
 				Robot.rightStickY = 0.65;
 			}
@@ -316,7 +320,81 @@ public class Autonomous {
 			break;
 			
 		case stage2:
+			if(!pipe.filterContoursOutput().isEmpty())
+			{
+				//int leftX, leftY, leftW, leftH;
+				//int rightX, rightY, rightW, rightH;
+				seeNothing = false;
+				int xFinal, yFinal, wFinal, hFinal;
+				Rect rFinal;
+				System.out.println("pipin");
+				Rect r = Imgproc.boundingRect(pipe.filterContoursOutput().get(0));
+				if(pipe.filterContoursOutput().size() > 1) {
+					Rect r2 = Imgproc.boundingRect(pipe.filterContoursOutput().get(1));
+					
+					if(r.y < r2.y) {
+						yFinal = r.y;
+						hFinal = ((r.y + r.height) - r2.y);
+					}
+					else {
+						yFinal = r2.y;
+						hFinal = ((r2.y + r2.height) - r.y);
+					}
+					if(r.x < r2.x) {
+						xFinal = r.x;
+						wFinal = ((r2.x + r2.width) - r.x);
+					}
+					else {
+						xFinal = r2.x;
+						wFinal = ((r.x + r.width) - r2.x);
+					}
+					
+					rFinal = new Rect(xFinal, yFinal, wFinal, hFinal);
+					
+					/*
+					if(r.x < r2.x){
+						leftX = r.x;
+						leftY = r.y;
+						leftW = r.width;
+						leftH = r.height;
+						rightX = r2.x;
+						rightY = r2.y;
+						rightW = r2.width;
+						rightH = r2.height;
+					}
+					else{
+						leftX = r2.x;
+						leftY = r2.y;
+						leftW = r2.width;
+						leftH = r2.height;
+						rightX = r.x;
+						rightY = r.y;
+						rightW = r.width;
+						rightH = r.height;
+					}
+					rFinal = new Rect(leftX, leftY, ((rightX + rightW) - leftX), (rightY + rightH) - leftY);
+					*/
+					
+					centerX = rFinal.x + (rFinal.width/2);
+					Imgproc.rectangle(pic, new Point(rFinal.x, rFinal.y), new Point((rFinal.x + rFinal.width), (rFinal.y + rFinal.height)),
+							new Scalar(255, 255, 255), 2);
+				}
+				else
+				{
+					centerX = r.x + (r.width / 2);
+					Imgproc.rectangle(pic, new Point(r.x, r.y), new Point((r.x + r.width), (r.y + r.height)),
+							new Scalar(255, 255, 255), 5);
+				}
+				
+				// Give the output stream a new image to display
+				rectOut.putFrame(pic);	
+			}
+			else
+			{
+				seeNothing = true;
+			}
 			if(Robot.doRightGear){//if we choose to do right gear
+				/*
 				if(gyro.getAngle() < 37){//if the robot haven't turn to the wanted angle range, keep turning left
 					Robot.leftStickY = 0.50;
 					Robot.rightStickY = -0.50;
@@ -327,9 +405,22 @@ public class Autonomous {
 				}
 				else {//if the robot turn to the angle we wanted, proceed to next stage
 					sideStage = sideGearSelection.stage3;
+				}*/
+				
+				if((centerX < 185) || seeNothing) {
+					Robot.leftStickY = 0.50;
+					Robot.rightStickY = -0.50;
+				}
+				else if(centerX > 195) {
+					Robot.leftStickY = -0.50;
+					Robot.rightStickY = 0.50;
+				}
+				else{
+					sideStage = sideStage.stage3;
 				}
 			}
 			else{	//if we choose to do left gear
+				/*
 				if(gyro.getAngle() > -37){//if the robot haven't turn to the wanted angle range, keep turning right
 					Robot.leftStickY = -0.5;
 					Robot.rightStickY = -0.5;
@@ -341,9 +432,21 @@ public class Autonomous {
 				else {//if the robot turn to the angle we wanted, proceed to next stage
 					sideStage = sideGearSelection.stage3;
 				}
+				*/
+				
+				if((centerX > 195) || seeNothing) {
+					Robot.leftStickY = -0.50;
+					Robot.rightStickY = 0.50;
+				}
+				else if(centerX < 185) {
+					Robot.leftStickY = 0.50;
+					Robot.rightStickY = -0.50;
+				}
+				else{
+					sideStage = sideStage.stage3;
+				}
 			}
 			break;
-			
 		case stage3:
 			//use camera to line up with the peg, reserved for the Cool Guy
 			if(!pipe.filterContoursOutput().isEmpty())

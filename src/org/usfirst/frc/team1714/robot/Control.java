@@ -28,11 +28,14 @@ public class Control {
 	}
 	
 	public void update(){//assign the value of the variable based on the input of the driver station
-		if(leftStick.getRawButton(4) && !lastInvert)
+		if(leftStick.getRawButton(4))
 		{
-			inverted = !inverted;
+			inverted = false;
 		}
-		lastInvert = leftStick.getRawButton(4);
+		else if(leftStick.getRawButton(5)) 
+		{
+			inverted = true;
+		}
 		
 		if(!leftStick.getRawButton(1)) {
 			Robot.shiftHigh = rightStick.getRawButton(3);
@@ -50,6 +53,7 @@ public class Control {
 		Robot.autoGear = leftStick.getRawButton(1);
 		Robot.spinUp = xboxStick.getBumper(Hand.kRight);
 		Robot.spinOff = xboxStick.getBumper(Hand.kLeft);
+		
 		
 		if(!leftStick.getRawButton(1))
 		{

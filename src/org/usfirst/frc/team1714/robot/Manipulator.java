@@ -22,7 +22,7 @@ public class Manipulator {
 	
 	private double
 		intakeSpeed = 0.75,
-		beltSpeed = 0.6,
+		beltSpeed = 0.7,
 		shootInitialSpeed = 0.82,
 		shootSpeed,
 		shootSpeedIncrement 	= 0.0025, 
@@ -100,11 +100,11 @@ public class Manipulator {
 			case 1:
 			{
 				spinningUp = true;
-				if(speedEncoder.getRate() > 132000)
-				{
+				//if(speedEncoder.getRate() > 132000)
+				//{
 					beltUP();
 					intakeIN();
-				}
+				//}
 				break;
 			}
 			case 2:
@@ -153,7 +153,7 @@ public class Manipulator {
 			shootVictor.set(shootInitialSpeed);
 		}
 		else{
-		shootVictor.set(shootSpeed); //RIVEST HARDCODE MOTOR SPEED
+		shootVictor.set(0.95); //RIVEST HARDCODE MOTOR SPEED
 		//shootVictor.set(shootSpeed); RIVEST REMOVED TO HARDCODE MOTOR SPEED
 		}
 	}

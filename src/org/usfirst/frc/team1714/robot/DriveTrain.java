@@ -46,7 +46,7 @@ public class DriveTrain {
 	    tLeftRear = new CANTalon(tLeftRearPin);
 	    
 	    shiftsolenoid = new DoubleSolenoid(pcmID, shiftsolenoidPin1, shiftsolenoidPin2);
-	    shiftsolenoid.set(DoubleSolenoid.Value.kForward);
+	    //shiftsolenoid.set(DoubleSolenoid.Value.kForward);
 	    PTOsolenoid = new DoubleSolenoid(pcmID, PTOsolenoidPin1, PTOsolenoidPin2);
 	    PTOsolenoid.set(DoubleSolenoid.Value.kForward);
     	comp = new Compressor(pcmID);
@@ -87,7 +87,7 @@ public class DriveTrain {
 			 SmartDashboard.putNumber("left stick", leftStickY);
 		 }
 		 else {
-			 if(/*(leftStickY > 0 && rightStickY > 0) || */(leftStickY < 0 && rightStickY < 0)){//if both joystick is either in positive or negative direction
+			 if((leftStickY > 0 && rightStickY > 0) || (leftStickY < 0 && rightStickY < 0)){//if both joystick is either in positive or negative direction
 
 			 /*	When PTO is enabled, we want both side of the drive train to run in the same speed because we we do not we will break the transmission
 			  * we agree that we will take the joystick that has the smaller value to drive when PTO is enable so that we won't run PTO in high speed easily 

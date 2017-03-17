@@ -125,7 +125,8 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		autoSelected = autoChooser.getSelected();
 		System.out.println("Auto selected: " + autoSelected);
-		shiftLow = true;
+		//shiftLow = true;
+		//shiftHigh = false;
 	}
 
 	/**
