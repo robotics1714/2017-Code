@@ -80,7 +80,7 @@ public class DriveTrain {
 		 //driving section
 		 if(!PTOenabled){
 			 drive.tankDrive(leftStickY, rightStickY);
-			 System.out.println("drivin");
+			 //System.out.println("drivin");
 			 SmartDashboard.putNumber("right motor", tRightFront.get());
 			 SmartDashboard.putNumber("left motor", tLeftFront.get());
 			 SmartDashboard.putNumber("right stick", rightStickY);
@@ -97,7 +97,7 @@ public class DriveTrain {
 					 if(leftStickY < rightStickY){
 						 drive.tankDrive(leftStickY, leftStickY);//if left joystick Y value is smaller, use left joystick Y value for both joystick
 					 }
-					 else if(leftStickY > rightStickY){
+					 else{
 						 drive.tankDrive(rightStickY, rightStickY);//if right joystick Y value is smaller, use right joystick Y value for both joystick
 					 }
 				 }
@@ -105,7 +105,7 @@ public class DriveTrain {
 					 if(leftStickY > rightStickY){
 						 drive.tankDrive(leftStickY, leftStickY);//if left joystick Y value is bigger, use left joystick Y value for both joystick
 					 }
-					 else if(leftStickY < rightStickY){
+					 else{
 						 drive.tankDrive(rightStickY, rightStickY);//if right joystick Y value is bigger, use right joystick Y value for both joystick
 					 }
 				 }

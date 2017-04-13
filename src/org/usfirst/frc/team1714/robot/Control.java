@@ -42,8 +42,13 @@ public class Control {
 			Robot.shiftLow = rightStick.getRawButton(2);
 		}
 		
-		Robot.enablePTO = leftStick.getRawButton(3);
-		Robot.disablePTO = leftStick.getRawButton(2);
+		Robot.enablePTO = xboxStick.getTrigger(Hand.kRight);
+		if(Robot.enablePTO){
+			inverted = true;
+			Robot.shiftHigh = false;
+			Robot.shiftLow = true;
+		}
+		Robot.disablePTO = xboxStick.getTrigger(Hand.kLeft);
 		
 		Robot.shoot = xboxStick.getAButton();
 		Robot.feedBeltReverse = xboxStick.getBackButton();

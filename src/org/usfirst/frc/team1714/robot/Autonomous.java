@@ -147,6 +147,8 @@ public class Autonomous {
 	public void middleGear(){
 		Robot.shiftLow = true;
 		Robot.shiftHigh = false;
+		Robot.disablePTO = true;
+		Robot.enablePTO = false;
 		SmartDashboard.putString("uhhhhhhh idk dude", middleStage.toString());
 		sink.grabFrame(pic);
 		pipe.process(pic);
@@ -172,7 +174,7 @@ public class Autonomous {
 				//int rightX, rightY, rightW, rightH;
 				int xFinal, yFinal, wFinal, hFinal;
 				Rect rFinal;
-				System.out.println("pipin");
+				//System.out.println("pipin");
 				Rect r = Imgproc.boundingRect(pipe.filterContoursOutput().get(0));
 				if(pipe.filterContoursOutput().size() > 1) {
 					Rect r2 = Imgproc.boundingRect(pipe.filterContoursOutput().get(1));
@@ -234,26 +236,26 @@ public class Autonomous {
 				// Give the output stream a new image to display
 				rectOut.putFrame(pic);
 				
-				if(centerX > 195){
-					System.out.println("right");
+				if(centerX > 175){
+					//System.out.println("right");
 					Robot.leftStickY = -0.65;
 					Robot.rightStickY = -0.75;
 				}
-				else if(centerX < 185){
-					System.out.println("left");
+				else if(centerX < 165){
+					//System.out.println("left");
 					Robot.leftStickY = -0.75;
 					Robot.rightStickY = -0.65;
 				}
 				else
 				{
-					System.out.println("straight ahead");
+					//System.out.println("straight ahead");
 					Robot.leftStickY = -0.65;
 					Robot.rightStickY = -0.65;
 				}
 			}
 			else
 			{
-				System.out.println("it's 0 time");
+				//System.out.println("it's 0 time");
 				Robot.leftStickY = 0;
 				Robot.rightStickY = 0;
 			}
@@ -290,6 +292,8 @@ public class Autonomous {
 	public void sideGear(){
 		Robot.shiftLow = true;
 		Robot.shiftHigh = false;
+		Robot.disablePTO = true;
+		Robot.enablePTO = false;
 		sink.grabFrame(pic);
 		pipe.process(pic);
 		camwham.setExposureManual(5);
@@ -297,24 +301,18 @@ public class Autonomous {
 		switch(sideStage){
 		case stage1:
 		default://go straight for a certain distance
-			/*
 			if(!timerStarted) {
 				startingTime = Timer.getFPGATimestamp();
 				timerStarted = true;
 			}
-			if((Timer.getFPGATimestamp() - startingTime) < 2) {
-				if(!gyroCalibrated) {
-					gyro.calibrate();
-					gyro.setSensitivity(0.001675);
-					gyroCalibrated = true;
-				}
+			
+			if((Timer.getFPGATimestamp() - startingTime) < 2.4 && (Timer.getFPGATimestamp() - startingTime) > 1) {
+				Robot.leftStickY = -0.80;
+				Robot.rightStickY = -0.80;
 			}
-			*/
-			if((Timer.getFPGATimestamp() - startingTime) < 3) {
-				Robot.leftStickY = 0.65;
-				Robot.rightStickY = 0.65;
-			}
-			else {
+			else if((Timer.getFPGATimestamp() - startingTime) > 2.4) {
+				//Robot.leftStickY = 0;
+				//Robot.rightStickY = 0;
 				sideStage = sideGearSelection.stage2;
 			}
 			break;
@@ -327,7 +325,7 @@ public class Autonomous {
 				seeNothing = false;
 				int xFinal, yFinal, wFinal, hFinal;
 				Rect rFinal;
-				System.out.println("pipin");
+				//System.out.println("pipin");
 				Rect r = Imgproc.boundingRect(pipe.filterContoursOutput().get(0));
 				if(pipe.filterContoursOutput().size() > 1) {
 					Rect r2 = Imgproc.boundingRect(pipe.filterContoursOutput().get(1));
@@ -393,56 +391,54 @@ public class Autonomous {
 			{
 				seeNothing = true;
 			}
+			
+			
+			
+			/// SECTION 1 RIGHT FOR JAMES
+			
+			
+			
 			if(Robot.doRightGear){//if we choose to do right gear
-				/*
-				if(gyro.getAngle() < 37){//if the robot haven't turn to the wanted angle range, keep turning left
-					Robot.leftStickY = 0.50;
-					Robot.rightStickY = -0.50;
+				if(seeNothing) {
+					Robot.leftStickY = -0.70;
+					Robot.rightStickY = 0.70;
 				}
-				else if(gyro.getAngle() > 43){//if the robot turn too much, turn right
+				else if((centerX < 165)) {
 					Robot.leftStickY = -0.50;
 					Robot.rightStickY = 0.50;
 				}
-				else {//if the robot turn to the angle we wanted, proceed to next stage
-					sideStage = sideGearSelection.stage3;
-				}*/
-				
-				if((centerX < 185) || seeNothing) {
+				else if(centerX > 175) {
 					Robot.leftStickY = 0.50;
 					Robot.rightStickY = -0.50;
-				}
-				else if(centerX > 195) {
-					Robot.leftStickY = -0.50;
-					Robot.rightStickY = 0.50;
 				}
 				else{
+					//Robot.leftStickY = 0;
+					//Robot.rightStickY = 0;
 					sideStage = sideStage.stage3;
 				}
 			}
+			
+			
+			/// SECTION 1 LEFT FOR JAMES
+			
+			
+			
 			else{	//if we choose to do left gear
-				/*
-				if(gyro.getAngle() > -37){//if the robot haven't turn to the wanted angle range, keep turning right
-					Robot.leftStickY = -0.5;
-					Robot.rightStickY = -0.5;
+				if(seeNothing) {
+					Robot.leftStickY = 0.70;
+					Robot.rightStickY = -0.70;
 				}
-				else if(gyro.getAngle() < -43){//if the robot turn too much, turn left
-					Robot.leftStickY = 0.5;
-					Robot.rightStickY = -0.5;
-				}
-				else {//if the robot turn to the angle we wanted, proceed to next stage
-					sideStage = sideGearSelection.stage3;
-				}
-				*/
-				
-				if((centerX > 195) || seeNothing) {
-					Robot.leftStickY = -0.50;
-					Robot.rightStickY = 0.50;
-				}
-				else if(centerX < 185) {
+				else if((centerX > 175)) {
 					Robot.leftStickY = 0.50;
 					Robot.rightStickY = -0.50;
 				}
+				else if(centerX < 165) {
+					Robot.leftStickY = -0.50;
+					Robot.rightStickY = 0.50;
+				}
 				else{
+					//Robot.leftStickY = 0;
+					//Robot.rightStickY = 0;
 					sideStage = sideStage.stage3;
 				}
 			}
@@ -455,7 +451,7 @@ public class Autonomous {
 				//int rightX, rightY, rightW, rightH;
 				int xFinal, yFinal, wFinal, hFinal;
 				Rect rFinal;
-				System.out.println("pipin");
+				//System.out.println("pipin");
 				Rect r = Imgproc.boundingRect(pipe.filterContoursOutput().get(0));
 				if(pipe.filterContoursOutput().size() > 1) {
 					Rect r2 = Imgproc.boundingRect(pipe.filterContoursOutput().get(1));
@@ -514,31 +510,38 @@ public class Autonomous {
 							new Scalar(255, 255, 255), 5);
 				}
 				
+				
+				
+				///SECTION 2 FOR JAMES
+				
+				
+				
 				// Give the output stream a new image to display
 				rectOut.putFrame(pic);
-				
-				if(centerX > 195){
-					System.out.println("right");
-					Robot.leftStickY = -0.75;
-					Robot.rightStickY = -0.85;
+				//old: 175
+				if(centerX > 175){
+					//System.out.println("right");
+					Robot.leftStickY = -0.70;
+					Robot.rightStickY = -0.80;
 				}
-				else if(centerX < 185){
-					System.out.println("left");
-					Robot.leftStickY = -0.85;
-					Robot.rightStickY = -0.75;
+				//old: 165
+				else if(centerX < 165){
+					//System.out.println("left");
+					Robot.leftStickY = -0.80;
+					Robot.rightStickY = -0.70;
 				}
 				else
 				{
-					System.out.println("straight ahead");
-					Robot.leftStickY = -0.75;
-					Robot.rightStickY = -0.75;
+					//System.out.println("straight ahead");
+					Robot.leftStickY = -0.80;
+					Robot.rightStickY = -0.80;
 				}
 			}
 			else
 			{
-				System.out.println("it's 0 time");
-				Robot.leftStickY = 0;
-				Robot.rightStickY = 0;
+				//System.out.println("it's 0 time");
+				//Robot.leftStickY = 0;
+				//Robot.rightStickY = 0; 
 			}
 			if(gearUSonic.getRangeInches() < 35)
 			{
@@ -556,8 +559,8 @@ public class Autonomous {
 			}
 			else
 			{
-				Robot.leftStickY = 0;
-				Robot.rightStickY = 0;
+				//Robot.leftStickY = 0;
+				//Robot.rightStickY = 0;
 				sideStage = sideGearSelection.stage5;
 			}
 			break;
