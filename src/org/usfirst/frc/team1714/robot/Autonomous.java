@@ -9,11 +9,13 @@ import edu.wpi.cscore.*;
 import org.opencv.core.*;
 import org.opencv.imgproc.*;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 
 public class Autonomous {
 	public Ultrasonic intakeUSonic, gearUSonic;
 	public AnalogGyro gyro;
+	public DigitalInput pegMag;
 	public Encoder leftEncoder,rightEncoder;
 	UsbCamera camwham;
 	public Mat pic;
@@ -27,10 +29,11 @@ public class Autonomous {
 	private sideGearSelection sideStage;
 	
 	public enum middleGearSelection{
-		stage1, stage2, stage3, stage4, nostage
+		stage1, stage2, stage3, stage4, stage5, nostage
 	}
 	public middleGearSelection middleStage;
 	
+	private boolean movingToTower = false;
 	
 	//Pin placeholder
 	private int
@@ -282,7 +285,44 @@ public class Autonomous {
 			}
 			break;
 		case stage4:
-			
+			/*
+			if(pegMag.get())
+			{
+				middleStage = middleGearSelection.stage5;
+			}
+			else
+			{
+				if(!movingToTower)
+				{
+					if(gearUSonic.getRangeInches() < 10)
+					{
+						Robot.leftStickY = 0.60;
+						Robot.rightStickY = 0.60;
+					}
+					else
+					{
+						movingToTower = true;
+					}
+				}
+				else 
+				{
+					if(gearUSonic.getRangeInches() > 6)
+					{
+						Robot.leftStickY = -0.60;
+						Robot.rightStickY = -0.60;
+					}
+					else
+					{
+						movingToTower = false;
+					}
+				}
+			}
+			*/
+			break;
+		case stage5:
+			Robot.leftStickY = 0;
+			Robot.rightStickY = 0;
+			break;
 		}
 	}
 	
@@ -559,8 +599,8 @@ public class Autonomous {
 			}
 			else
 			{
-				//Robot.leftStickY = 0;
-				//Robot.rightStickY = 0;
+				Robot.leftStickY = 0;
+				Robot.rightStickY = 0;
 				sideStage = sideGearSelection.stage5;
 			}
 			break;
@@ -568,6 +608,39 @@ public class Autonomous {
 		case stage5://Wriggle or drive in curve line to get the gear on
 			//Robot.leftStickY = temp - temp;
 			//Robot.rightStickY = temp + temp;
+			/*
+			if(pegMag.get())
+			{
+				middleStage = middleGearSelection.stage5;
+			}
+			else
+			{
+				if(!movingToTower)
+				{
+					if(gearUSonic.getRangeInches() < 10)
+					{
+						Robot.leftStickY = 0.60;
+						Robot.rightStickY = 0.60;
+					}
+					else
+					{
+						movingToTower = true;
+					}
+				}
+				else 
+				{
+					if(gearUSonic.getRangeInches() > 6)
+					{
+						Robot.leftStickY = -0.60;
+						Robot.rightStickY = -0.60;
+					}
+					else
+					{
+						movingToTower = false;
+					}
+				}
+			}
+			*/
 			break;
 		}
 	}
