@@ -159,6 +159,7 @@ public class Robot extends IterativeRobot {
 		
 		train.update(enablePTO, disablePTO, shiftHigh, shiftLow, autoGear, leftStickY, rightStickY);
 		manipulator.update(shoot, intakeOn, intakeStop, intakeReverse, feedBeltReverse, spinUp, spinOff);
+		cameraServo.set(0.0);
 	}
 
 	/**
@@ -240,6 +241,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit()
 	{
+		cameraServo.setDisabled();
 		camera.setExposureManual(40);
 	}
 }
