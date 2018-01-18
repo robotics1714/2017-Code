@@ -346,7 +346,7 @@ public class Autonomous {
 				timerStarted = true;
 			}
 			
-			if((Timer.getFPGATimestamp() - startingTime) < 2.4 && (Timer.getFPGATimestamp() - startingTime) > 1) {
+			if((Timer.getFPGATimestamp() - startingTime) < 2.4 && (Timer.getFPGATimestamp() - startingTime) > 0.5) {
 				Robot.leftStickY = -0.80;
 				Robot.rightStickY = -0.80;
 			}
@@ -443,13 +443,13 @@ public class Autonomous {
 					Robot.leftStickY = -0.70;
 					Robot.rightStickY = 0.70;
 				}
-				else if((centerX < 165)) {
-					Robot.leftStickY = -0.50;
-					Robot.rightStickY = 0.50;
+				else if((centerX < 175)) {
+					Robot.leftStickY = -0.45;
+					Robot.rightStickY = 0.45;
 				}
-				else if(centerX > 175) {
-					Robot.leftStickY = 0.50;
-					Robot.rightStickY = -0.50;
+				else if(centerX > 185) {
+					Robot.leftStickY = 0.45;
+					Robot.rightStickY = -0.45;
 				}
 				else{
 					//Robot.leftStickY = 0;
@@ -468,13 +468,13 @@ public class Autonomous {
 					Robot.leftStickY = 0.70;
 					Robot.rightStickY = -0.70;
 				}
-				else if((centerX > 175)) {
-					Robot.leftStickY = 0.50;
-					Robot.rightStickY = -0.50;
+				else if((centerX > 185)) {
+					Robot.leftStickY = 0.45;
+					Robot.rightStickY = -0.45;
 				}
-				else if(centerX < 165) {
-					Robot.leftStickY = -0.50;
-					Robot.rightStickY = 0.50;
+				else if(centerX < 175) {
+					Robot.leftStickY = -0.45;
+					Robot.rightStickY = 0.45;
 				}
 				else{
 					//Robot.leftStickY = 0;
@@ -559,13 +559,13 @@ public class Autonomous {
 				// Give the output stream a new image to display
 				rectOut.putFrame(pic);
 				//old: 175
-				if(centerX > 175){
+				if(centerX > 185){
 					//System.out.println("right");
 					Robot.leftStickY = -0.70;
 					Robot.rightStickY = -0.80;
 				}
 				//old: 165
-				else if(centerX < 165){
+				else if(centerX < 175){
 					//System.out.println("left");
 					Robot.leftStickY = -0.80;
 					Robot.rightStickY = -0.70;
